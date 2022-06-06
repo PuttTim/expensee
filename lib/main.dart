@@ -1,4 +1,5 @@
 import 'package:expensee/models/AppColours.dart';
+import 'package:expensee/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expensee',
       theme: ThemeData(
+          useMaterial3: true,
           fontFamily: 'Poppins',
           scaffoldBackgroundColor: AppColours.wittyWhite,
           colorScheme: const ColorScheme.light(
@@ -26,13 +28,6 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: Center(
-        child: Text('HALLO'),
-      ),
-    );
+    return const Scaffold(body: NavBar());
   }
 }
