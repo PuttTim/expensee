@@ -31,6 +31,7 @@ class _NavBarState extends State<NavBar> {
             iconTheme: MaterialStateProperty.all(
                 const IconThemeData(color: AppColours.paleForestryGreen))),
         child: NavigationBar(
+          animationDuration: const Duration(milliseconds: 1000),
           selectedIndex: currentScreenIndex,
           onDestinationSelected: (int newIndex) {
             setState(() {
