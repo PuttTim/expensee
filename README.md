@@ -1,16 +1,7 @@
-# expensee
+# Expensee Flutter Android Application
 
-Expensee is an Expense Tracking Application
+Expense Tracking application built using Flutter with a focus on currencies.
 
-## Getting Started
+This application is my submission for my Year 2 Semester 1 project in Polytechnic.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
