@@ -13,13 +13,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expensee',
       theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Poppins',
-          scaffoldBackgroundColor: AppColours.wittyWhite,
-          colorScheme: const ColorScheme.light(
-              background: AppColours.wittyWhite,
-              primary: AppColours.forestryGreen,
-              secondary: AppColours.moodyPurple)),
+        useMaterial3: true,
+        fontFamily: 'Poppins',
+        scaffoldBackgroundColor: AppColours.wittyWhite,
+        colorScheme: const ColorScheme.light(
+          background: AppColours.wittyWhite,
+          primary: AppColours.forestryGreen,
+          secondary: AppColours.moodyPurple,
+        ),
+      ),
       home: MainScreen(),
     );
   }

@@ -22,14 +22,19 @@ class _NavBarState extends State<NavBar> {
       body: screens[currentScreenIndex],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-            indicatorColor: AppColours.blackestBlack.withOpacity(0.40),
-            backgroundColor: AppColours.forestryGreen,
-            labelTextStyle: MaterialStateProperty.all(const TextStyle(
-                color: AppColours.paleForestryGreen,
-                fontWeight: FontWeight.w500,
-                fontSize: 16)),
-            iconTheme: MaterialStateProperty.all(
-                const IconThemeData(color: AppColours.paleForestryGreen))),
+          indicatorColor: AppColours.blackestBlack.withOpacity(0.40),
+          backgroundColor: AppColours.forestryGreen,
+          labelTextStyle: MaterialStateProperty.all(
+            const TextStyle(
+              color: AppColours.paleForestryGreen,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+          iconTheme: MaterialStateProperty.all(
+            const IconThemeData(color: AppColours.paleForestryGreen),
+          ),
+        ),
         child: NavigationBar(
           animationDuration: const Duration(milliseconds: 1000),
           selectedIndex: currentScreenIndex,
@@ -40,17 +45,20 @@ class _NavBarState extends State<NavBar> {
           },
           destinations: const [
             NavigationDestination(
-                selectedIcon: Icon(Icons.home),
-                icon: Icon(Icons.home_outlined),
-                label: 'Home'),
+              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
             NavigationDestination(
-                selectedIcon: Icon(Icons.currency_exchange),
-                icon: Icon(Icons.currency_exchange_outlined),
-                label: 'Currencies'),
+              selectedIcon: Icon(Icons.currency_exchange),
+              icon: Icon(Icons.currency_exchange_outlined),
+              label: 'Currencies',
+            ),
             NavigationDestination(
-                selectedIcon: Icon(Icons.sync_alt_rounded),
-                icon: Icon(Icons.sync_alt_outlined),
-                label: 'Bill Splits')
+              selectedIcon: Icon(Icons.sync_alt_rounded),
+              icon: Icon(Icons.sync_alt_outlined),
+              label: 'Bill Splits',
+            )
           ],
         ),
       ),
