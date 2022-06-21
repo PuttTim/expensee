@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../models/AppColours.dart';
-import '../screens/currency_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/splits_screen.dart';
+import 'currency_screen.dart';
+import 'home_screen.dart';
+import 'splits_screen.dart';
 
-class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _MainScreenState extends State<MainScreen> {
   int currentScreenIndex = 0;
   List<Widget> screens = const [HomeScreen(), CurrencyScreen(), SplitsScreen()];
 

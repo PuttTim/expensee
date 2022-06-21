@@ -1,7 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:expensee/models/AppColours.dart';
-import 'package:expensee/widgets/navbar.dart';
+import 'package:expensee/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -23,34 +23,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Expensee',
-      theme: ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Poppins',
-        scaffoldBackgroundColor: AppColours.wittyWhite,
-        // Ternary to switch between the Android 12's stretchy scroll animation and the glow animation in versions below 12.
-        androidOverscrollIndicator: sdkInt >= 31
-            ? AndroidOverscrollIndicator.stretch
-            : AndroidOverscrollIndicator.glow,
-        colorScheme: const ColorScheme.light(
-          background: AppColours.wittyWhite,
-          primary: AppColours.forestryGreen,
-          secondary: AppColours.moodyPurple,
+        title: 'Expensee',
+        theme: ThemeData(
+          useMaterial3: true,
+          fontFamily: 'Poppins',
+          scaffoldBackgroundColor: AppColours.wittyWhite,
+          // Ternary to switch between the Android 12's stretchy scroll animation and the glow animation in versions below 12.
+          androidOverscrollIndicator: sdkInt >= 31
+              ? AndroidOverscrollIndicator.stretch
+              : AndroidOverscrollIndicator.glow,
+          colorScheme: const ColorScheme.light(
+            background: AppColours.wittyWhite,
+            primary: AppColours.forestryGreen,
+            secondary: AppColours.moodyPurple,
+          ),
         ),
-      ),
-      home: MainScreen(),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: DoubleBack(
-        message: 'Press back again to exit.',
-        child: NavBar(),
-      ),
-    );
+        home: const DoubleBack(
+          child: MainScreen(),
+        ));
   }
 }
