@@ -1,3 +1,4 @@
+import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:expensee/models/AppColours.dart';
 import 'package:expensee/widgets/navbar.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,11 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: NavBar());
+    return const Scaffold(
+      body: DoubleBack(
+        message: 'Press back again to exit.',
+        child: NavBar(),
+      ),
+    );
   }
 }
