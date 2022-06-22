@@ -14,9 +14,12 @@ Future<void> main() async {
   AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
 
   // Passes the Device's Android SDK version as a parameter to the application.
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => Currencies())],
-      child: MyApp(sdkInt: androidInfo.version.sdkInt)));
+      child: MyApp(sdkInt: androidInfo.version.sdkInt),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
