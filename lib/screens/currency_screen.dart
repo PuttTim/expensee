@@ -1,9 +1,10 @@
-import 'dart:async';
-
 import 'package:currency_picker/currency_picker.dart';
-import 'package:expensee/models/AppColours.dart';
-import 'package:expensee/utilities/countrycode_to_emoji.dart';
+import 'package:expensee/models/app_colours.dart';
+import 'package:expensee/providers/currency_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../utilities/countrycode_to_emoji.dart';
 
 class CurrencyScreen extends StatefulWidget {
   const CurrencyScreen({Key? key}) : super(key: key);
@@ -13,14 +14,6 @@ class CurrencyScreen extends StatefulWidget {
 }
 
 class _CurrencyScreenState extends State<CurrencyScreen> {
-  String time = '';
-  Timer? timer;
-  String primaryCurrency = 'SGD';
-
-  setPrimaryCurrency(String code) {
-    setState(() => {primaryCurrency = code});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,12 +46,14 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(
-                        '${countryToEmoji(primaryCurrency)} $primaryCurrency',
-                        style: const TextStyle(
-                          color: AppColours.forestryGreen,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                      child: Consumer<Currencies>(
+                        builder: (context, currencies, child) => Text(
+                          '${countryToEmoji(currencies.primaryCurrency)} ${currencies.primaryCurrency}',
+                          style: const TextStyle(
+                            color: AppColours.moodyPurple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),
                         ),
                       ),
                     ),
@@ -81,8 +76,9 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                               color: AppColours.paleMoodyPurple,
                             ),
                           ),
-                          onSelect: (Currency currency) =>
-                              setPrimaryCurrency(currency.code),
+                          onSelect: (Currency currency) => context
+                              .read<Currencies>()
+                              .setPrimary(currency.code),
                         )
                       },
                       child: const Text('Select'),

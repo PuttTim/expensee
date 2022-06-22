@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/AppColours.dart';
+import '../models/app_colours.dart';
 import 'currency_screen.dart';
 import 'home_screen.dart';
 import 'splits_screen.dart';

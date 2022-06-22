@@ -37,6 +37,7 @@ dependencies:
   double_back_to_close: ^2.0.0
   device_info_plus: ^4.0.0
   currency_picker: ^2.0.11
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
