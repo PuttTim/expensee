@@ -23,23 +23,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Expensee',
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Poppins',
-          scaffoldBackgroundColor: AppColours.wittyWhite,
-          // Ternary to switch between the Android 12's stretchy scroll animation and the glow animation in versions below 12.
-          androidOverscrollIndicator: sdkInt >= 31
-              ? AndroidOverscrollIndicator.stretch
-              : AndroidOverscrollIndicator.glow,
-          colorScheme: const ColorScheme.light(
-            background: AppColours.wittyWhite,
-            primary: AppColours.forestryGreen,
-            secondary: AppColours.moodyPurple,
-          ),
+      title: 'Expensee',
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Poppins',
+        scaffoldBackgroundColor: AppColours.wittyWhite,
+        // Ternary to switch between the Android 12's stretchy scroll animation and the glow animation in versions below 12.
+        androidOverscrollIndicator: sdkInt >= 31
+            ? AndroidOverscrollIndicator.stretch
+            : AndroidOverscrollIndicator.glow,
+        colorScheme: const ColorScheme.light(
+          background: AppColours.wittyWhite,
+          primary: AppColours.forestryGreen,
+          secondary: AppColours.moodyPurple,
         ),
-        home: const DoubleBack(
-          child: MainScreen(),
-        ));
+      ),
+      home: const DoubleBack(
+        child: MainScreen(),
+      ),
+    );
   }
 }

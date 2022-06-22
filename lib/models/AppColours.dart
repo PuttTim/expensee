@@ -11,4 +11,5 @@ class AppColours {
   static const Color transferTeal = Color(0xFF58A9A5);
   static const Color splitPurple = Color(0xFF51529B);
   static const Color paleForestryGreen = Color(0xFFBACEBC);
+  static const Color paleMoodyPurple = Color(0xFFAB8CA9);
 }
