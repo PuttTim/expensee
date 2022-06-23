@@ -93,7 +93,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             Consumer<Currencies>(
               builder: (context, currencies, child) =>
                   FutureBuilder<CurrencyRates>(
-                future: currencies.getCurrencyRate(),
+                future: currencies.getCurrencyRate(currencies.primaryCurrency),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;
@@ -101,7 +101,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       padding: const EdgeInsets.only(top: 16, bottom: 32),
                       shrinkWrap: true,
                       itemBuilder: (context, index) => ExchangeRatesCard(
-                        base: currencies.primaryCurrency,
+                        base: data.base,
                         rates: data.rates.values.toList()[index],
                         currency: data.rates.keys.toList()[index],
                       ),

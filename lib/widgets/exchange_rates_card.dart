@@ -13,7 +13,7 @@ class ExchangeRatesCard extends StatelessWidget {
 
   final String currency;
   final String base;
-  final double rates;
+  final dynamic rates;
 
   static const textStyle = TextStyle(
       fontWeight: FontWeight.w500,
@@ -34,6 +34,7 @@ class ExchangeRatesCard extends StatelessWidget {
             Text(
               "${countryToEmoji(currency)} $currency $rates",
               style: textStyle,
+              textWidthBasis: TextWidthBasis.longestLine,
             ),
             const Text('=', style: textStyle),
             Text(
