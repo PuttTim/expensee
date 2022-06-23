@@ -1,7 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:expensee/models/app_colours.dart';
-import 'package:expensee/providers/currency_provider.dart';
+import 'package:expensee/providers/currencies_provider.dart';
 import 'package:expensee/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,9 @@ Future<void> main() async {
   // Passes the Device's Android SDK version as a parameter to the application.
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => Currencies())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => CurrenciesProvider())
+      ],
       child: MyApp(sdkInt: androidInfo.version.sdkInt),
     ),
   );

@@ -1,12 +1,12 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:expensee/models/app_colours.dart';
-import 'package:expensee/providers/currency_provider.dart';
+import 'package:expensee/providers/currencies_provider.dart';
 import 'package:expensee/widgets/exchange_rates_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/currency_rates.dart';
-import '../providers/currency_provider.dart';
+import '../providers/currencies_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
 class CurrencyScreen extends StatefulWidget {
@@ -49,9 +49,9 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Consumer<Currencies>(
-                        builder: (context, currencies, child) => Text(
-                          '${countryToEmoji(currencies.primaryCurrency)} ${currencies.primaryCurrency}',
+                      child: Consumer<CurrenciesProvider>(
+                        builder: (context, currenciesProvider, child) => Text(
+                          '${countryToEmoji(currenciesProvider.primaryCurrency)} ${currenciesProvider.primaryCurrency}',
                           style: const TextStyle(
                             color: AppColours.moodyPurple,
                             fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                             ),
                           ),
                           onSelect: (Currency currency) => context
-                              .read<Currencies>()
+                              .read<CurrenciesProvider>()
                               .setPrimary(currency.code),
                         )
                       },
@@ -90,10 +90,11 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                 ),
               ),
             ),
-            Consumer<Currencies>(
-              builder: (context, currencies, child) =>
+            Consumer<CurrenciesProvider>(
+              builder: (context, currenciesProvider, child) =>
                   FutureBuilder<CurrencyRates>(
-                future: currencies.getCurrencyRate(currencies.primaryCurrency),
+                future: currenciesProvider
+                    .getCurrencyRate(currenciesProvider.primaryCurrency),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;
