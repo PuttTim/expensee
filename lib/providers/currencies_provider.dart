@@ -37,7 +37,7 @@ class CurrenciesProvider with ChangeNotifier {
     // Fetches the JSON data from the API endpoint
     Response response = await http.get(Uri.parse(apiURL));
 
-    // If the response is successful, parse the JSON data and return it to the function caller.
+    // If the response is successful, parse the JSON data and return the decoded CurrencyRates response to the function caller.
     if (response.statusCode == 200) {
       CurrencyRates decoded = CurrencyRates.fromJson(jsonDecode(response.body));
       return decoded;

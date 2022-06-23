@@ -29,7 +29,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           children: [
             Container(
               padding:
-                  const EdgeInsets.only(left: 0, right: 0, bottom: 16, top: 16),
+                  const EdgeInsets.only(left: 4, right: 0, bottom: 16, top: 16),
               alignment: Alignment.centerLeft,
               child: const Text(
                 'Primary Currency',
@@ -98,18 +98,45 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;
-                    return ListView.separated(
-                      padding: const EdgeInsets.only(top: 16, bottom: 32),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => ExchangeRatesCard(
-                        base: data.base,
-                        rates: data.rates.values.toList()[index],
-                        currency: data.rates.keys.toList()[index],
-                      ),
-                      itemCount: data.rates.length,
-                      separatorBuilder: (context, index) => Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                      ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Last updated at',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: AppColours.forestryGreen,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            data.date,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColours.forestryGreen,
+                            ),
+                          ),
+                        ),
+                        ListView.separated(
+                          padding: const EdgeInsets.only(top: 16, bottom: 32),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => ExchangeRatesCard(
+                            base: data.base,
+                            rates: data.rates.values.toList()[index],
+                            currency: data.rates.keys.toList()[index],
+                          ),
+                          itemCount: data.rates.length,
+                          separatorBuilder: (context, index) => Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                        ),
+                      ],
                     );
                   } else {
                     return Text('waiting..');
