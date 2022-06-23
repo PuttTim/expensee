@@ -96,7 +96,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;
-                    return Text(data.rates['USD'].toString());
+
+                    return Text(data.base);
                   } else {
                     return Text('waiting..');
                   }
