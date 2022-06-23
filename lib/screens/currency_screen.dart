@@ -1,11 +1,11 @@
-import 'dart:convert';
-
 import 'package:currency_picker/currency_picker.dart';
 import 'package:expensee/models/app_colours.dart';
 import 'package:expensee/providers/currency_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/currency_rates.dart';
+import '../providers/currency_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
 class CurrencyScreen extends StatefulWidget {
@@ -89,17 +89,20 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                 ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Consumer<Currencies>(
-                  builder: (context, currencies, child) => ListView(
-                        padding: const EdgeInsets.all(8),
-                        children: <Widget>[
-                          Text(jsonDecode(currencies.getCurrencyRates(
-                              currencies.primaryCurrency))['USD'])
-                        ],
-                      )),
-            ),
+            Consumer<Currencies>(
+              builder: (context, currencies, child) =>
+                  FutureBuilder<CurrencyRates>(
+                future: currencies.getCurrencyRate(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    CurrencyRates data = snapshot.data!;
+                    return Text(data.rates['USD'].toString());
+                  } else {
+                    return Text('waiting..');
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
