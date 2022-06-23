@@ -28,8 +28,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
         child: Column(
           children: [
             Container(
-              padding:
-                  const EdgeInsets.only(left: 4, right: 0, bottom: 16, top: 16),
+              padding: const EdgeInsets.only(left: 4, bottom: 16, top: 8),
               alignment: Alignment.centerLeft,
               child: const Text(
                 'Primary Currency',
@@ -139,7 +138,10 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       ],
                     );
                   } else {
-                    return Text('waiting..');
+                    return Container(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: const CircularProgressIndicator(),
+                    );
                   }
                 },
               ),
