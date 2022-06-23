@@ -1,6 +1,7 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:expensee/models/app_colours.dart';
 import 'package:expensee/providers/currency_provider.dart';
+import 'package:expensee/widgets/exchange_rates_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,8 +42,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             ),
             Card(
               child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 8, right: 8, top: 16, bottom: 16),
+                padding:
+                    const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -96,8 +97,19 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;
-
-                    return Text(data.base);
+                    return ListView.separated(
+                      padding: const EdgeInsets.only(top: 16, bottom: 32),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => ExchangeRatesCard(
+                        base: currencies.primaryCurrency,
+                        rates: data.rates.values.toList()[index],
+                        currency: data.rates.keys.toList()[index],
+                      ),
+                      itemCount: data.rates.length,
+                      separatorBuilder: (context, index) => Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                      ),
+                    );
                   } else {
                     return Text('waiting..');
                   }

@@ -13,13 +13,10 @@ class Currencies with ChangeNotifier {
     notifyListeners();
   }
 
-  String getCurrencyRates(String base) {
-    return currencyRates.base;
-  }
-
   Future<CurrencyRates> getCurrencyRate() async {
     final String response = await rootBundle.loadString('assets/rates.json');
     dynamic decoded = CurrencyRates.fromJson(jsonDecode(response));
+
     return decoded;
   }
 }
