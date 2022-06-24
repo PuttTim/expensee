@@ -1,11 +1,14 @@
 import 'package:expensee/models/category.dart';
+import 'package:expensee/providers/currencies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:group_button/group_button.dart';
+import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
 import '../models/transaction_type_enum.dart';
+import '../utilities/countrycode_to_emoji.dart';
 
 class CreateTransactionScreen extends StatelessWidget {
   CreateTransactionScreen({Key? key}) : super(key: key);
@@ -34,40 +37,101 @@ class CreateTransactionScreen extends StatelessWidget {
                 elevation: 8,
                 child: Row(
                   children: [
-                    FormBuilderField(
-                      name: 'isPositive',
-                      initialValue: true,
-                      builder: (FormFieldState<dynamic> field) {
-                        return GroupButton(
-                          controller: GroupButtonController(selectedIndex: 0),
-                          onSelected: (_, index, isSelected) {
-                            print('${index}');
-                            print('${index == 0 ? true : false}');
-                            index == 0
-                                ? field.didChange(true)
-                                : field.didChange(false);
-                          },
-                          buttons: const ['+', '-'],
-                          options: const GroupButtonOptions(
-                              direction: Axis.vertical,
-                              spacing: 0,
-                              buttonHeight: 50,
-                              unselectedBorderColor: AppColours.paleMoodyPurple,
-                              selectedBorderColor: AppColours.moodyPurple,
-                              selectedColor: AppColours.moodyPurple,
-                              selectedTextStyle: TextStyle(
-                                  color: AppColours.wittyWhite, fontSize: 32),
-                              unselectedTextStyle: TextStyle(
-                                  color: AppColours.paleMoodyPurple,
-                                  fontSize: 32)),
-                        );
-                      },
+                    Expanded(
+                      flex: 0,
+                      child: FormBuilderField(
+                        name: 'isPositive',
+                        initialValue: true,
+                        builder: (FormFieldState<dynamic> field) {
+                          return GroupButton(
+                            controller: GroupButtonController(selectedIndex: 0),
+                            onSelected: (_, index, isSelected) {
+                              print('${index}');
+                              print('${index == 0 ? true : false}');
+                              index == 0
+                                  ? field.didChange(true)
+                                  : field.didChange(false);
+                            },
+                            buttons: const ['+', '-'],
+                            options: const GroupButtonOptions(
+                                direction: Axis.vertical,
+                                spacing: 0,
+                                buttonHeight: 50,
+                                unselectedBorderColor:
+                                    AppColours.paleMoodyPurple,
+                                selectedBorderColor: AppColours.moodyPurple,
+                                selectedColor: AppColours.moodyPurple,
+                                selectedTextStyle: TextStyle(
+                                    color: AppColours.wittyWhite, fontSize: 32),
+                                unselectedTextStyle: TextStyle(
+                                    color: AppColours.paleMoodyPurple,
+                                    fontSize: 32)),
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: FormBuilderTextField(
+                          name: 'amount',
+                          keyboardType: TextInputType.number,
+                          style: const TextStyle(
+                              color: AppColours.forestryGreen,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold),
+                          decoration: const InputDecoration(
+                            labelText: 'Amount',
+                            hintText: '0.00',
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            floatingLabelStyle: TextStyle(
+                                color: AppColours.forestryGreen,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold),
+                            hintStyle: TextStyle(
+                                color: AppColours.forestryGreen,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold),
+                            labelStyle: TextStyle(
+                                color: AppColours.forestryGreen,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: FormBuilderDropdown(
+                          name: 'currency',
+                          initialValue: Provider.of<CurrenciesProvider>(context,
+                                  listen: false)
+                              .primaryCurrency,
+                          style: const TextStyle(
+                              color: AppColours.moodyPurple,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500),
+                          items: ['EUR', 'SGD', 'THB', 'USD']
+                              .map((currency) => DropdownMenuItem(
+                                    value: currency,
+                                    child: Text(
+                                        '${countryToEmoji(currency)} $currency'),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
                     )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 256, right: 8, left: 8),
+                padding: const EdgeInsets.only(bottom: 64, right: 8, left: 8),
                 child: Column(
                   children: [
                     Container(
@@ -199,14 +263,13 @@ class CreateTransactionScreen extends StatelessWidget {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
                           Icons.calendar_month,
                           color: AppColours.moodyPurple,
                         ),
                         labelText: 'Date and Time',
-                        labelStyle:
-                            const TextStyle(color: AppColours.moodyPurple),
+                        labelStyle: TextStyle(color: AppColours.moodyPurple),
                       ),
                     ),
                     Container(
