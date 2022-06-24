@@ -3,8 +3,8 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 import '../models/app_colours.dart';
 
-class NewTransactionScreen extends StatelessWidget {
-  const NewTransactionScreen({Key? key}) : super(key: key);
+class NewRecordScreen extends StatelessWidget {
+  const NewRecordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

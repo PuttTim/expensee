@@ -1,4 +1,4 @@
-import 'package:expensee/screens/new_transaction_screen.dart';
+import 'package:expensee/screens/new_record_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const NewTransactionScreen(),
+            builder: (context) => const NewRecordScreen(),
           ),
         ),
       ),
