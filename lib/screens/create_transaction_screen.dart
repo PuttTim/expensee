@@ -1,6 +1,7 @@
 import 'package:expensee/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../models/app_colours.dart';
 import '../models/transaction_type_enum.dart';
@@ -11,6 +12,13 @@ class CreateTransactionScreen extends StatelessWidget {
   OutlineInputBorder borderTheme = const OutlineInputBorder(
     borderSide: BorderSide(
       color: AppColours.moodyPurple,
+      width: 2,
+    ),
+  );
+
+  OutlineInputBorder errorBorderTheme = const OutlineInputBorder(
+    borderSide: BorderSide(
+      color: AppColours.feistyOrange,
       width: 2,
     ),
   );
@@ -32,13 +40,14 @@ class CreateTransactionScreen extends StatelessWidget {
       // SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 16, right: 8, left: 8),
+          padding: const EdgeInsets.only(bottom: 256, right: 8, left: 8),
           child: FormBuilder(
             key: _formKey,
             child: Column(
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
                   child: const Text(
                     'Transaction Type',
                     style: TextStyle(
@@ -49,10 +58,20 @@ class CreateTransactionScreen extends StatelessWidget {
                   ),
                 ),
                 FormBuilderRadioGroup(
+                  name: 'type',
                   activeColor: AppColours.moodyPurple,
                   focusColor: AppColours.moodyPurple,
-                  decoration: InputDecoration(border: InputBorder.none),
-                  name: 'type',
+                  hoverColor: AppColours.moodyPurple,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                        errorText: 'Transaction Type is required')
+                  ]),
+                  decoration: InputDecoration(
+                    focusedErrorBorder: errorBorderTheme,
+                    errorBorder: errorBorderTheme,
+                    enabledBorder: borderTheme,
+                    focusedBorder: borderTheme,
+                  ),
                   options: const [
                     FormBuilderFieldOption(
                       value: TransactionType.cash,
@@ -69,15 +88,17 @@ class CreateTransactionScreen extends StatelessWidget {
                       ),
                     ),
                     FormBuilderFieldOption(
-                        value: TransactionType.online,
-                        child: Text(
-                          'Online',
-                          style: TextStyle(color: AppColours.moodyPurple),
-                        )),
+                      value: TransactionType.online,
+                      child: Text(
+                        'Online',
+                        style: TextStyle(color: AppColours.moodyPurple),
+                      ),
+                    ),
                   ],
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
                   child: const Text(
                     'Payee',
                     style: TextStyle(
@@ -89,7 +110,22 @@ class CreateTransactionScreen extends StatelessWidget {
                 ),
                 FormBuilderTextField(
                   name: 'payee',
+                  style: const TextStyle(color: AppColours.moodyPurple),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(
+                        errorText: 'Payee is required'),
+                    FormBuilderValidators.minLength(
+                      1,
+                      errorText: 'Payee must be at least 1 character long',
+                    ),
+                    FormBuilderValidators.maxLength(
+                      19,
+                      errorText: 'Payee must be less than 20 characters',
+                    ),
+                  ]),
                   decoration: InputDecoration(
+                    focusedErrorBorder: errorBorderTheme,
+                    errorBorder: errorBorderTheme,
                     enabledBorder: borderTheme,
                     focusedBorder: borderTheme,
                     labelText: 'Name',
@@ -110,6 +146,7 @@ class CreateTransactionScreen extends StatelessWidget {
                 ),
                 FormBuilderDropdown(
                   name: 'category',
+                  // No validator is required here as there is an initialValue set to Category.food
                   decoration: InputDecoration(
                       enabledBorder: borderTheme, focusedBorder: borderTheme),
                   initialValue: Category.food,
@@ -145,6 +182,10 @@ class CreateTransactionScreen extends StatelessWidget {
                 ),
                 FormBuilderDateTimePicker(
                   name: 'time',
+                  style: const TextStyle(color: AppColours.moodyPurple),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                  ]),
                   decoration: InputDecoration(
                     prefixIcon: const Icon(
                       Icons.calendar_month,
@@ -152,6 +193,8 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     labelText: 'Date and Time',
                     labelStyle: const TextStyle(color: AppColours.moodyPurple),
+                    errorBorder: errorBorderTheme,
+                    focusedErrorBorder: errorBorderTheme,
                     enabledBorder: borderTheme,
                     focusedBorder: borderTheme,
                   ),
@@ -170,7 +213,17 @@ class CreateTransactionScreen extends StatelessWidget {
                 ),
                 FormBuilderTextField(
                   name: 'note',
+                  style: const TextStyle(color: AppColours.moodyPurple),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.maxLength(
+                      199,
+                      errorText: 'Note must be less than 200 characters',
+                    ),
+                  ]),
                   decoration: InputDecoration(
+                    counterText: '/200',
+                    errorBorder: errorBorderTheme,
+                    focusedErrorBorder: errorBorderTheme,
                     enabledBorder: borderTheme,
                     focusedBorder: borderTheme,
                     labelText: 'Transaction Note',
