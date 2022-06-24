@@ -48,24 +48,18 @@ class CreateTransactionScreen extends StatelessWidget {
                             onSelected: (_, index, isSelected) {
                               print('${index}');
                               print('${index == 0 ? true : false}');
-                              index == 0
-                                  ? field.didChange(true)
-                                  : field.didChange(false);
+                              index == 0 ? field.didChange(true) : field.didChange(false);
                             },
                             buttons: const ['+', '-'],
                             options: const GroupButtonOptions(
                                 direction: Axis.vertical,
                                 spacing: 0,
                                 buttonHeight: 50,
-                                unselectedBorderColor:
-                                    AppColours.paleMoodyPurple,
+                                unselectedBorderColor: AppColours.paleMoodyPurple,
                                 selectedBorderColor: AppColours.moodyPurple,
                                 selectedColor: AppColours.moodyPurple,
-                                selectedTextStyle: TextStyle(
-                                    color: AppColours.wittyWhite, fontSize: 32),
-                                unselectedTextStyle: TextStyle(
-                                    color: AppColours.paleMoodyPurple,
-                                    fontSize: 32)),
+                                selectedTextStyle: TextStyle(color: AppColours.wittyWhite, fontSize: 32),
+                                unselectedTextStyle: TextStyle(color: AppColours.paleMoodyPurple, fontSize: 32)),
                           );
                         },
                       ),
@@ -78,25 +72,17 @@ class CreateTransactionScreen extends StatelessWidget {
                           name: 'amount',
                           keyboardType: TextInputType.number,
                           style: const TextStyle(
-                              color: AppColours.forestryGreen,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold),
+                              color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
                           decoration: const InputDecoration(
                             labelText: 'Amount',
                             hintText: '0.00',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            floatingLabelStyle: TextStyle(
-                                color: AppColours.forestryGreen,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
-                            hintStyle: TextStyle(
-                                color: AppColours.forestryGreen,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold),
-                            labelStyle: TextStyle(
-                                color: AppColours.forestryGreen,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
+                            floatingLabelStyle:
+                                TextStyle(color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
+                            hintStyle:
+                                TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
+                            labelStyle:
+                                TextStyle(color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
@@ -110,18 +96,13 @@ class CreateTransactionScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderDropdown(
                           name: 'currency',
-                          initialValue: Provider.of<CurrenciesProvider>(context,
-                                  listen: false)
-                              .primaryCurrency,
-                          style: const TextStyle(
-                              color: AppColours.moodyPurple,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500),
+                          initialValue: Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
+                          style:
+                              const TextStyle(color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
                           items: ['EUR', 'SGD', 'THB', 'USD']
                               .map((currency) => DropdownMenuItem(
                                     value: currency,
-                                    child: Text(
-                                        '${countryToEmoji(currency)} $currency'),
+                                    child: Text('${countryToEmoji(currency)} $currency'),
                                   ))
                               .toList(),
                         ),
@@ -151,10 +132,8 @@ class CreateTransactionScreen extends StatelessWidget {
                       activeColor: AppColours.moodyPurple,
                       focusColor: AppColours.moodyPurple,
                       hoverColor: AppColours.moodyPurple,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Transaction Type is required')
-                      ]),
+                      validator: FormBuilderValidators.compose(
+                          [FormBuilderValidators.required(errorText: 'Transaction Type is required')]),
                       options: const [
                         FormBuilderFieldOption(
                           value: TransactionType.cash,
@@ -195,8 +174,7 @@ class CreateTransactionScreen extends StatelessWidget {
                       name: 'payee',
                       style: const TextStyle(color: AppColours.moodyPurple),
                       validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                            errorText: 'Payee is required'),
+                        FormBuilderValidators.required(errorText: 'Payee is required'),
                         FormBuilderValidators.minLength(
                           1,
                           errorText: 'Payee must be at least 1 character long',
@@ -238,8 +216,7 @@ class CreateTransactionScreen extends StatelessWidget {
                                   SizedBox(width: 16),
                                   Text(
                                     category['name'],
-                                    style: const TextStyle(
-                                        color: AppColours.moodyPurple),
+                                    style: const TextStyle(color: AppColours.moodyPurple),
                                   )
                                 ]),
                               ))

@@ -21,17 +21,13 @@ class CurrenciesProvider with ChangeNotifier {
 
     // Switch/case would not work for some reason, so I'm using if/else for now.
     if (base == 'USD') {
-      apiURL =
-          'https://api.exchangerate.host/latest?base=USD&symbols=EUR,SGD,THB&places=2';
+      apiURL = 'https://api.exchangerate.host/latest?base=USD&symbols=EUR,SGD,THB&places=2';
     } else if (base == 'EUR') {
-      apiURL =
-          'https://api.exchangerate.host/latest?base=EUR&symbols=SGD,THB,USD&places=2';
+      apiURL = 'https://api.exchangerate.host/latest?base=EUR&symbols=SGD,THB,USD&places=2';
     } else if (base == 'THB') {
-      apiURL =
-          'https://api.exchangerate.host/latest?base=THB&symbols=EUR,SGD,USD&places=2';
+      apiURL = 'https://api.exchangerate.host/latest?base=THB&symbols=EUR,SGD,USD&places=2';
     } else {
-      apiURL =
-          'https://api.exchangerate.host/latest?base=SGD&symbols=EUR,THB,USD&places=2';
+      apiURL = 'https://api.exchangerate.host/latest?base=SGD&symbols=EUR,THB,USD&places=2';
     }
 
     // Fetches the JSON data from the API endpoint

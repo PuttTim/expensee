@@ -41,8 +41,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             ),
             Card(
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -71,16 +70,13 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                               fontSize: 17,
                               color: AppColours.moodyPurple,
                             ),
-                            bottomSheetHeight:
-                                MediaQuery.of(context).size.height / 2,
+                            bottomSheetHeight: MediaQuery.of(context).size.height / 2,
                             subtitleTextStyle: const TextStyle(
                               fontSize: 15,
                               color: AppColours.paleMoodyPurple,
                             ),
                           ),
-                          onSelect: (Currency currency) => context
-                              .read<CurrenciesProvider>()
-                              .setPrimary(currency.code),
+                          onSelect: (Currency currency) => context.read<CurrenciesProvider>().setPrimary(currency.code),
                         )
                       },
                       child: const Text('Select'),
@@ -90,10 +86,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
               ),
             ),
             Consumer<CurrenciesProvider>(
-              builder: (context, currenciesProvider, child) =>
-                  FutureBuilder<CurrencyRates>(
-                future: currenciesProvider
-                    .getCurrencyRate(currenciesProvider.primaryCurrency),
+              builder: (context, currenciesProvider, child) => FutureBuilder<CurrencyRates>(
+                future: currenciesProvider.getCurrencyRate(currenciesProvider.primaryCurrency),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     CurrencyRates data = snapshot.data!;

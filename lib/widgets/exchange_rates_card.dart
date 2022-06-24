@@ -4,21 +4,14 @@ import 'package:flutter/material.dart';
 import '../models/app_colours.dart';
 
 class ExchangeRatesCard extends StatelessWidget {
-  const ExchangeRatesCard(
-      {Key? key,
-      required this.base,
-      required this.rates,
-      required this.currency})
+  const ExchangeRatesCard({Key? key, required this.base, required this.rates, required this.currency})
       : super(key: key);
 
   final String currency;
   final String base;
   final dynamic rates;
 
-  static const textStyle = TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 24,
-      color: AppColours.forestryGreen);
+  static const textStyle = TextStyle(fontWeight: FontWeight.w500, fontSize: 24, color: AppColours.forestryGreen);
 
   @override
   Widget build(BuildContext context) {

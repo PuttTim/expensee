@@ -36,11 +36,7 @@ class NewRecordScreen extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(
-                  children: [
-                    CreateTransactionScreen(),
-                    CreateTransferScreen(),
-                    CreateBillScreen()
-                  ],
+                  children: [CreateTransactionScreen(), CreateTransferScreen(), CreateBillScreen()],
                 ),
               ),
             ],
