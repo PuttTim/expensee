@@ -1,3 +1,6 @@
+import 'package:expensee/screens/create_bill_screen.dart';
+import 'package:expensee/screens/create_transaction_screen.dart';
+import 'package:expensee/screens/create_transfer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -24,7 +27,7 @@ class NewRecordScreen extends StatelessWidget {
                   indicatorWeight: 4,
                   labelColor: AppColours.moodyPurple,
                   indicatorColor: AppColours.moodyPurple,
-                  tabs: [
+                  tabs: const [
                     Tab(text: 'Transfer'),
                     Tab(text: 'Transaction'),
                     Tab(text: 'Split'),
@@ -34,9 +37,9 @@ class NewRecordScreen extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    Text('Transfer'),
-                    Text('Transaction'),
-                    Text('Split')
+                    CreateTransactionScreen(),
+                    CreateTransferScreen(),
+                    CreateBillScreen()
                   ],
                 ),
               ),
