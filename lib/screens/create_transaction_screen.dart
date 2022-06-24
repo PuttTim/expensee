@@ -66,12 +66,6 @@ class CreateTransactionScreen extends StatelessWidget {
                     FormBuilderValidators.required(
                         errorText: 'Transaction Type is required')
                   ]),
-                  decoration: InputDecoration(
-                    focusedErrorBorder: errorBorderTheme,
-                    errorBorder: errorBorderTheme,
-                    enabledBorder: borderTheme,
-                    focusedBorder: borderTheme,
-                  ),
                   options: const [
                     FormBuilderFieldOption(
                       value: TransactionType.cash,
@@ -124,10 +118,6 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                   ]),
                   decoration: InputDecoration(
-                    focusedErrorBorder: errorBorderTheme,
-                    errorBorder: errorBorderTheme,
-                    enabledBorder: borderTheme,
-                    focusedBorder: borderTheme,
                     labelText: 'Name',
                     labelStyle: TextStyle(color: AppColours.moodyPurple),
                   ),
@@ -147,8 +137,6 @@ class CreateTransactionScreen extends StatelessWidget {
                 FormBuilderDropdown(
                   name: 'category',
                   // No validator is required here as there is an initialValue set to Category.food
-                  decoration: InputDecoration(
-                      enabledBorder: borderTheme, focusedBorder: borderTheme),
                   initialValue: Category.food,
                   items: categories
                       .map((category) => DropdownMenuItem(
@@ -193,10 +181,6 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     labelText: 'Date and Time',
                     labelStyle: const TextStyle(color: AppColours.moodyPurple),
-                    errorBorder: errorBorderTheme,
-                    focusedErrorBorder: errorBorderTheme,
-                    enabledBorder: borderTheme,
-                    focusedBorder: borderTheme,
                   ),
                 ),
                 Container(
@@ -222,10 +206,6 @@ class CreateTransactionScreen extends StatelessWidget {
                   ]),
                   decoration: InputDecoration(
                     counterText: '/200',
-                    errorBorder: errorBorderTheme,
-                    focusedErrorBorder: errorBorderTheme,
-                    enabledBorder: borderTheme,
-                    focusedBorder: borderTheme,
                     labelText: 'Transaction Note',
                     labelStyle: TextStyle(color: AppColours.moodyPurple),
                   ),

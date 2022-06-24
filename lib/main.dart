@@ -48,6 +48,32 @@ class MyApp extends StatelessWidget {
           primary: AppColours.forestryGreen,
           secondary: AppColours.moodyPurple,
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColours.feistyOrange,
+              width: 2,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColours.feistyOrange,
+              width: 2,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColours.moodyPurple,
+              width: 2,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColours.moodyPurple,
+              width: 2,
+            ),
+          ),
+        ),
       ),
       home: const DoubleBack(
         child: MainScreen(),
