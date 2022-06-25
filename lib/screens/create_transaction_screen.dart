@@ -1,4 +1,5 @@
 import 'package:expensee/models/category.dart';
+import 'package:expensee/models/transaction_type_enum.dart';
 import 'package:expensee/providers/currencies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -7,7 +8,8 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
-import '../models/transaction_type_enum.dart';
+import '../models/transaction_record.dart';
+import '../providers/records_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
 class CreateTransactionScreen extends StatelessWidget {
@@ -21,7 +23,13 @@ class CreateTransactionScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_formKey.currentState!.saveAndValidate()) {
-            print(_formKey.currentState!.value);
+            _formKey.currentState!.value.values.forEach((value) {
+              debugPrint(value.runtimeType.toString());
+            });
+            // print(_formKey.currentState!.value.runtimeType);
+            Provider.of<RecordsProvider>(context, listen: false).insertRecord(
+              TransactionRecord.fromJson(_formKey.currentState!.value),
+            );
             Navigator.pop(context);
           }
         },
@@ -44,9 +52,10 @@ class CreateTransactionScreen extends StatelessWidget {
                         initialValue: true,
                         builder: (FormFieldState<dynamic> field) {
                           return GroupButton(
-                            controller: GroupButtonController(selectedIndex: 0),
+                            controller: GroupButtonController(selectedIndex: field.value ? 0 : 1),
                             onSelected: (_, index, isSelected) {
                               index == 0 ? field.didChange(true) : field.didChange(false);
+                              debugPrint(index.toString());
                             },
                             buttons: const ['+', '-'],
                             options: const GroupButtonOptions(
@@ -74,6 +83,7 @@ class CreateTransactionScreen extends StatelessWidget {
                             FormBuilderValidators.min(0, errorText: 'Invalid amount'),
                             FormBuilderValidators.numeric(errorText: 'Invalid amount'),
                           ]),
+                          valueTransformer: (value) => double.parse(value!),
                           style: const TextStyle(
                               color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
                           decoration: const InputDecoration(
@@ -138,6 +148,7 @@ class CreateTransactionScreen extends StatelessWidget {
                       hoverColor: AppColours.moodyPurple,
                       validator: FormBuilderValidators.compose(
                           [FormBuilderValidators.required(errorText: 'Transaction Type is required')]),
+                      valueTransformer: (value) => value?.toString().split('.').last,
                       options: const [
                         FormBuilderFieldOption(
                           value: TransactionType.cash,
@@ -188,7 +199,7 @@ class CreateTransactionScreen extends StatelessWidget {
                           errorText: 'Payee must be less than 20 characters',
                         ),
                       ]),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Name',
                         labelStyle: TextStyle(color: AppColours.moodyPurple),
                       ),
@@ -208,6 +219,7 @@ class CreateTransactionScreen extends StatelessWidget {
                     FormBuilderDropdown(
                       name: 'category',
                       // No validator is required here as there is an initialValue set to Category.food
+                      valueTransformer: (value) => value?.toString().split('.').last,
                       initialValue: Category.food,
                       items: categories
                           .map((category) => DropdownMenuItem(
@@ -217,7 +229,7 @@ class CreateTransactionScreen extends StatelessWidget {
                                     category['icon'],
                                     color: AppColours.moodyPurple,
                                   ),
-                                  SizedBox(width: 16),
+                                  const SizedBox(width: 16),
                                   Text(
                                     category['name'],
                                     style: const TextStyle(color: AppColours.moodyPurple),
@@ -244,6 +256,7 @@ class CreateTransactionScreen extends StatelessWidget {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
+                      valueTransformer: (date) => date?.toIso8601String(),
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.calendar_month,
@@ -274,7 +287,7 @@ class CreateTransactionScreen extends StatelessWidget {
                           errorText: 'Note must be less than 200 characters',
                         ),
                       ]),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         counterText: '/200',
                         labelText: 'Transaction Note',
                         labelStyle: TextStyle(color: AppColours.moodyPurple),

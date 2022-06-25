@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum Category {
+  @JsonValue("food")
   food,
+  @JsonValue("shopping")
   shopping,
+  @JsonValue("transport")
   transport,
+  @JsonValue("housing")
   housing,
+  @JsonValue("others")
   others,
 }
 
