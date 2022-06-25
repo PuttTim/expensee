@@ -42,6 +42,7 @@ List<Map<String, dynamic>> categories = [
   },
 ];
 
+/// Maps through the enum and returns the icon for the passed in category.
 dynamic categoryToIcon(Category category) {
   late IconData icon;
   categories.forEach((element) {
