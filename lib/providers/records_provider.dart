@@ -7,6 +7,7 @@ import '../models/category.dart';
 class RecordsProvider with ChangeNotifier {
   List<dynamic> records = [
     TransactionRecord(
+      isPositive: false,
       amount: -6.0,
       currency: 'SGD',
       type: TransactionType.cashless,
@@ -16,6 +17,7 @@ class RecordsProvider with ChangeNotifier {
       note: 'Dinner!',
     ),
     TransactionRecord(
+      isPositive: false,
       amount: -19.89,
       currency: 'SGD',
       type: TransactionType.cash,

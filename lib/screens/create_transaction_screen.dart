@@ -46,22 +46,22 @@ class CreateTransactionScreen extends StatelessWidget {
           child: Column(
             children: [
               Material(
-                elevation: 8,
+                elevation: 2,
                 child: Row(
                   children: [
                     Expanded(
                       flex: 0,
                       child: FormBuilderField(
                         name: 'isPositive',
-                        initialValue: true,
+                        initialValue: false,
                         builder: (FormFieldState<dynamic> field) {
                           return GroupButton(
-                            controller: GroupButtonController(selectedIndex: field.value ? 0 : 1),
+                            controller: GroupButtonController(selectedIndex: field.value ? 1 : 0),
                             onSelected: (_, index, isSelected) {
-                              index == 0 ? field.didChange(true) : field.didChange(false);
+                              index == 1 ? field.didChange(true) : field.didChange(false);
                               debugPrint(index.toString());
                             },
-                            buttons: const ['+', '-'],
+                            buttons: const ['-', '+'],
                             options: const GroupButtonOptions(
                                 direction: Axis.vertical,
                                 spacing: 0,
