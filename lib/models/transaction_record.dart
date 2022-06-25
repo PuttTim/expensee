@@ -6,7 +6,6 @@ part 'transaction_record.g.dart';
 
 @JsonSerializable()
 class TransactionRecord {
-  bool isPositive;
   double amount;
   String currency;
   TransactionType type;
@@ -16,7 +15,6 @@ class TransactionRecord {
   String? note;
 
   TransactionRecord({
-    required this.isPositive,
     required this.amount,
     required this.currency,
     required this.type,

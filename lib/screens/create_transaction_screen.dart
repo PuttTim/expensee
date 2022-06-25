@@ -23,12 +23,16 @@ class CreateTransactionScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_formKey.currentState!.saveAndValidate()) {
-            _formKey.currentState!.value.values.forEach((value) {
-              debugPrint(value.runtimeType.toString());
-            });
-            // print(_formKey.currentState!.value.runtimeType);
+            Map<String, dynamic> data = {
+              ..._formKey.currentState!.value,
+              'amount': _formKey.currentState!.value['isPositive']
+                  ? _formKey.currentState!.value['amount']
+                  : (-_formKey.currentState!.value['amount']),
+            };
+
+            //
             Provider.of<RecordsProvider>(context, listen: false).insertRecord(
-              TransactionRecord.fromJson(_formKey.currentState!.value),
+              TransactionRecord.fromJson(data),
             );
             Navigator.pop(context);
           }
