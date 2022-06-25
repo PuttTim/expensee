@@ -41,3 +41,14 @@ List<Map<String, dynamic>> categories = [
     'category': Category.others,
   },
 ];
+
+dynamic categoryToIcon(Category category) {
+  late IconData icon;
+  categories.forEach((element) {
+    if (element['category'] == category) {
+      icon = element['icon'];
+      return;
+    }
+  });
+  return icon;
+}
