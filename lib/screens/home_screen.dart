@@ -1,6 +1,6 @@
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
-import 'package:expensee/widgets/transaction_record_cart.dart';
+import 'package:expensee/widgets/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
