@@ -47,7 +47,7 @@ class TransactionRecordCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
-                          color: AppColours.transactionGreen, fontSize: 24, fontWeight: FontWeight.w500),
+                          color: AppColours.transactionGreen, fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     Row(
                       children: [
@@ -80,7 +80,10 @@ class TransactionRecordCard extends StatelessWidget {
                         child: Text(
                           '${record.amount} ${record.currency}',
                           textAlign: TextAlign.right,
-                          style: const TextStyle(color: AppColours.feistyOrange, fontSize: 24),
+                          style: TextStyle(
+                              color: record.isPositive ? AppColours.splitPurple : AppColours.feistyOrange,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24),
                         ),
                       ),
                       const Text(''),
