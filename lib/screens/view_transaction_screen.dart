@@ -79,12 +79,12 @@ class ViewTransactionScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text('Paid to', style: titleStyle),
             ),
-            const Divider(height: 8),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -92,12 +92,12 @@ class ViewTransactionScreen extends StatelessWidget {
                 style: subtitleStyle,
               ),
             ),
-            const Divider(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text('Category', style: titleStyle),
             ),
-            const Divider(height: 8),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
@@ -112,12 +112,12 @@ class ViewTransactionScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text('Transaction Type', style: titleStyle),
             ),
-            const Divider(height: 8),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -125,12 +125,12 @@ class ViewTransactionScreen extends StatelessWidget {
                 style: subtitleStyle,
               ),
             ),
-            const Divider(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text('Time of Transaction', style: titleStyle),
             ),
-            const Divider(height: 8),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -138,13 +138,13 @@ class ViewTransactionScreen extends StatelessWidget {
                 style: subtitleStyle,
               ),
             ),
-            const Divider(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               // Ternary to ensure there is a Note before displaying the title.
               child: Text(record.note!.isNotEmpty ? "Note" : "", style: titleStyle),
             ),
-            const Divider(height: 8),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
