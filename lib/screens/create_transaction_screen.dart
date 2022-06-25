@@ -46,15 +46,13 @@ class CreateTransactionScreen extends StatelessWidget {
                           return GroupButton(
                             controller: GroupButtonController(selectedIndex: 0),
                             onSelected: (_, index, isSelected) {
-                              print('${index}');
-                              print('${index == 0 ? true : false}');
                               index == 0 ? field.didChange(true) : field.didChange(false);
                             },
                             buttons: const ['+', '-'],
                             options: const GroupButtonOptions(
                                 direction: Axis.vertical,
                                 spacing: 0,
-                                buttonHeight: 50,
+                                buttonHeight: 60,
                                 unselectedBorderColor: AppColours.paleMoodyPurple,
                                 selectedBorderColor: AppColours.moodyPurple,
                                 selectedColor: AppColours.moodyPurple,
@@ -65,27 +63,33 @@ class CreateTransactionScreen extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      flex: 6,
+                      flex: 7,
                       child: Container(
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderTextField(
                           name: 'amount',
                           keyboardType: TextInputType.number,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(errorText: 'Amount is required'),
+                            FormBuilderValidators.min(0, errorText: 'Invalid amount'),
+                            FormBuilderValidators.numeric(errorText: 'Invalid amount'),
+                          ]),
                           style: const TextStyle(
-                              color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
+                              color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
                           decoration: const InputDecoration(
                             labelText: 'Amount',
                             hintText: '0.00',
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             floatingLabelStyle:
-                                TextStyle(color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
+                                TextStyle(color: AppColours.forestryGreen, fontSize: 16, fontWeight: FontWeight.bold),
                             hintStyle:
-                                TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
-                            labelStyle:
                                 TextStyle(color: AppColours.forestryGreen, fontSize: 24, fontWeight: FontWeight.bold),
+                            labelStyle:
+                                TextStyle(color: AppColours.forestryGreen, fontSize: 16, fontWeight: FontWeight.bold),
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
                           ),
                         ),
                       ),
