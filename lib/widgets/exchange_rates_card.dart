@@ -16,8 +16,7 @@ class ExchangeRatesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-      height: 60,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       child: Material(
         borderRadius: BorderRadius.circular(8),
         elevation: 4,

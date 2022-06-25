@@ -1,4 +1,5 @@
 import 'package:expensee/screens/new_record_screen.dart';
+import 'package:expensee/widgets/transaction_record_cart.dart';
 import 'package:flutter/material.dart';
 
 import '../models/app_colours.dart';
@@ -19,7 +20,11 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
       appBar: AppBar(title: Text('Home')),
-      body: Center(child: Text('asd')),
+      body: Container(
+        child: Column(
+          children: const [TransactionRecordCard()],
+        ),
+      ),
     );
   }
 }
