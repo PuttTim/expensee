@@ -139,7 +139,15 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                   }
                 },
               ),
-            )
+            ),
+            const SizedBox(height: 16),
+            const ElevatedButton(
+              // Placeholder for a future feature as this requires Firestore usage.
+              onPressed: null,
+              child: Text(
+                'Add secondary currency',
+              ),
+            ),
           ],
         ),
       ),
