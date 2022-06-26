@@ -33,4 +33,12 @@ class RecordsProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void updateRecord(
+      {required int index, required TransactionRecord record, required TransactionRecord previousRecord}) {
+    records.removeAt(index);
+    records.insert(index, record);
+
+    notifyListeners();
+  }
 }

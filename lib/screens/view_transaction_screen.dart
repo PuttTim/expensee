@@ -2,15 +2,16 @@ import 'package:expensee/models/transaction_record.dart';
 import 'package:expensee/screens/transaction_form_screen.dart';
 import 'package:expensee/utilities/capitaliseString.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
 import '../models/category.dart';
+import '../providers/records_provider.dart';
 import '../utilities/datetime_to_displayed_time.dart';
 
 class ViewTransactionScreen extends StatelessWidget {
-  const ViewTransactionScreen({Key? key, required this.record, required this.index}) : super(key: key);
+  const ViewTransactionScreen({Key? key, required this.index}) : super(key: key);
 
-  final TransactionRecord record;
   final int index;
 
   final TextStyle titleStyle = const TextStyle(
@@ -27,6 +28,7 @@ class ViewTransactionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TransactionRecord record = Provider.of<RecordsProvider>(context, listen: true).records[index];
     return Scaffold(
         appBar: AppBar(
           title: Text('Transaction Record'),
