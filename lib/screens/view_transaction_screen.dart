@@ -31,7 +31,7 @@ class ViewTransactionScreen extends StatelessWidget {
     TransactionRecord record = Provider.of<RecordsProvider>(context, listen: true).records[index];
     return Scaffold(
         appBar: AppBar(
-          title: Text('Transaction Record'),
+          title: const Text('Transaction Record'),
           actions: [
             IconButton(
               tooltip: 'Edit',

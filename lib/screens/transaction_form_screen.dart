@@ -51,7 +51,6 @@ class TransactionFormScreen extends StatelessWidget {
               Provider.of<RecordsProvider>(context, listen: false).updateRecord(
                 index: index!,
                 record: TransactionRecord.fromJson(data),
-                previousRecord: record!,
               );
             } else {
               Provider.of<RecordsProvider>(context, listen: false).insertRecord(
