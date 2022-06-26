@@ -1,4 +1,5 @@
 import 'package:expensee/models/transaction_record.dart';
+import 'package:expensee/screens/transaction_form_screen.dart';
 import 'package:expensee/utilities/capitaliseString.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,10 @@ import '../models/category.dart';
 import '../utilities/datetime_to_displayed_time.dart';
 
 class ViewTransactionScreen extends StatelessWidget {
-  const ViewTransactionScreen({Key? key, required this.record}) : super(key: key);
+  const ViewTransactionScreen({Key? key, required this.record, required this.index}) : super(key: key);
 
   final TransactionRecord record;
+  final int index;
 
   final TextStyle titleStyle = const TextStyle(
     color: AppColours.forestryGreen,
@@ -32,7 +34,12 @@ class ViewTransactionScreen extends StatelessWidget {
             IconButton(
               tooltip: 'Edit',
               icon: const Icon(Icons.edit_rounded, color: AppColours.wittyWhite),
-              onPressed: () => print('edit'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransactionFormScreen(isEditing: true, record: record, index: index),
+                ),
+              ),
             )
           ],
         ),

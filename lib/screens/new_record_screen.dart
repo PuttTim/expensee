@@ -1,6 +1,6 @@
 import 'package:expensee/screens/create_bill_screen.dart';
-import 'package:expensee/screens/create_transaction_screen.dart';
 import 'package:expensee/screens/create_transfer_screen.dart';
+import 'package:expensee/screens/transaction_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -36,7 +36,7 @@ class NewRecordScreen extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(
-                  children: [CreateTransactionScreen(), CreateTransferScreen(), CreateBillScreen()],
+                  children: [TransactionFormScreen(), CreateTransferScreen(), CreateBillScreen()],
                 ),
               ),
             ],

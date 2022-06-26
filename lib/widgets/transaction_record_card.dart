@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import '../models/transaction_record.dart';
 
 class TransactionRecordCard extends StatelessWidget {
-  const TransactionRecordCard({Key? key, required this.record}) : super(key: key);
+  const TransactionRecordCard({Key? key, required this.record, required this.index}) : super(key: key);
 
   final TransactionRecord record;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class TransactionRecordCard extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewTransactionScreen(record: record),
+            builder: (context) => ViewTransactionScreen(record: record, index: index),
           ),
         ),
         child: Material(

@@ -12,14 +12,30 @@ import '../models/transaction_record.dart';
 import '../providers/records_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
-class CreateTransactionScreen extends StatelessWidget {
-  CreateTransactionScreen({Key? key}) : super(key: key);
+class TransactionFormScreen extends StatelessWidget {
+  TransactionFormScreen({Key? key, this.isEditing = false, this.record, this.index}) : super(key: key);
+
+  bool isEditing;
+  TransactionRecord? record;
+  int? index;
 
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: isEditing
+          ? AppBar(
+              title: Text(isEditing ? 'Edit Transaction' : 'New Transaction'),
+              actions: [
+                IconButton(
+                  tooltip: 'Delete',
+                  icon: const Icon(Icons.delete, color: AppColours.wittyWhite),
+                  onPressed: () => null,
+                )
+              ],
+            )
+          : null,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_formKey.currentState!.saveAndValidate()) {
@@ -37,7 +53,7 @@ class CreateTransactionScreen extends StatelessWidget {
             Navigator.pop(context);
           }
         },
-        child: const Icon(Icons.done, color: AppColours.wittyWhite),
+        child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
       ),
       // SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
       body: SingleChildScrollView(
@@ -53,7 +69,7 @@ class CreateTransactionScreen extends StatelessWidget {
                       flex: 0,
                       child: FormBuilderField(
                         name: 'isPositive',
-                        initialValue: false,
+                        initialValue: isEditing ? record?.isPositive : false,
                         builder: (FormFieldState<dynamic> field) {
                           return GroupButton(
                             controller: GroupButtonController(selectedIndex: field.value ? 1 : 0),
@@ -81,6 +97,7 @@ class CreateTransactionScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderTextField(
                           name: 'amount',
+                          initialValue: isEditing ? record?.amount.abs().toString() : '',
                           keyboardType: TextInputType.number,
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(errorText: 'Amount is required'),
@@ -114,7 +131,9 @@ class CreateTransactionScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderDropdown(
                           name: 'currency',
-                          initialValue: Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
+                          initialValue: isEditing
+                              ? record?.currency
+                              : Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
                           style:
                               const TextStyle(color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
                           items: ['EUR', 'SGD', 'THB', 'USD']
@@ -147,6 +166,7 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     FormBuilderRadioGroup(
                       name: 'type',
+                      initialValue: isEditing ? record?.type : '',
                       activeColor: AppColours.moodyPurple,
                       focusColor: AppColours.moodyPurple,
                       hoverColor: AppColours.moodyPurple,
@@ -191,6 +211,7 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     FormBuilderTextField(
                       name: 'payee',
+                      initialValue: isEditing ? record?.payee : '',
                       style: const TextStyle(color: AppColours.moodyPurple),
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(errorText: 'Payee is required'),
@@ -222,9 +243,9 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     FormBuilderDropdown(
                       name: 'category',
+                      initialValue: isEditing ? record?.category : Category.food,
                       // No validator is required here as there is an initialValue set to Category.food
                       valueTransformer: (value) => value?.toString().split('.').last,
-                      initialValue: Category.food,
                       items: categories
                           .map((category) => DropdownMenuItem(
                                 value: category['category'],
@@ -256,6 +277,7 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     FormBuilderDateTimePicker(
                       name: 'time',
+                      initialValue: isEditing ? record?.time : DateTime.now(),
                       style: const TextStyle(color: AppColours.moodyPurple),
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
@@ -284,6 +306,7 @@ class CreateTransactionScreen extends StatelessWidget {
                     ),
                     FormBuilderTextField(
                       name: 'note',
+                      initialValue: isEditing ? record?.note : '',
                       style: const TextStyle(color: AppColours.moodyPurple),
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.maxLength(

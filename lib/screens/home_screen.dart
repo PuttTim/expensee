@@ -25,7 +25,8 @@ class HomeScreen extends StatelessWidget {
         body: Container(
             child: Consumer<RecordsProvider>(
           builder: (context, recordsProvider, child) => ListView.separated(
-            itemBuilder: (context, index) => TransactionRecordCard(record: recordsProvider.records[index]),
+            itemBuilder: (context, index) =>
+                TransactionRecordCard(record: recordsProvider.records[index], index: index),
             itemCount: recordsProvider.records.length,
             separatorBuilder: (context, index) => Container(),
           ),
