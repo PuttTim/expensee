@@ -21,7 +21,7 @@ class TransactionRecordCard extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewTransactionScreen(index: index),
+            builder: (context) => ViewTransactionScreen(record: record, index: index),
           ),
         ),
         child: Material(

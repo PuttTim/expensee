@@ -40,4 +40,10 @@ class RecordsProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deleteRecord({required int index}) {
+    records.removeAt(index);
+
+    notifyListeners();
+  }
 }

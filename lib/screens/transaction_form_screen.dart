@@ -11,6 +11,7 @@ import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../providers/records_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
+import 'main_screen.dart';
 
 class TransactionFormScreen extends StatelessWidget {
   TransactionFormScreen({Key? key, this.isEditing = false, this.record, this.index}) : super(key: key);
@@ -29,10 +30,18 @@ class TransactionFormScreen extends StatelessWidget {
               title: Text(isEditing ? 'Edit Transaction' : 'New Transaction'),
               actions: [
                 IconButton(
-                  tooltip: 'Delete',
-                  icon: const Icon(Icons.delete, color: AppColours.wittyWhite),
-                  onPressed: () => null,
-                )
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
               ],
             )
           : null,
@@ -57,7 +66,13 @@ class TransactionFormScreen extends StatelessWidget {
                 TransactionRecord.fromJson(data),
               );
             }
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
+              ),
+              (route) => false,
+            );
           }
         },
         child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
