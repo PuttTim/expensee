@@ -22,21 +22,39 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
       appBar: AppBar(title: Text('Home')),
-      body: Container(
-        child: Consumer<RecordsProvider>(
-          builder: (context, recordsProvider, child) {
-            List<dynamic> records = recordsProvider.records;
-            // Sorts the transactions by DateTime, newest record first.
-            records.sort((a, b) {
-              return b.time.compareTo(a.time);
-            });
-            return ListView.separated(
-              itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
-              itemCount: recordsProvider.records.length,
-              separatorBuilder: (context, index) => Container(),
-            );
-          },
-        ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+              itemBuilder: (BuildContext context, int index) => Card(
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Center(child: Text('Card Text $index'))),
+              ),
+            ),
+          ),
+          Consumer<RecordsProvider>(
+            builder: (context, recordsProvider, child) {
+              List<dynamic> records = recordsProvider.records;
+              // Sorts the transactions by DateTime, newest record first.
+              records.sort((a, b) {
+                return b.time.compareTo(a.time);
+              });
+              return ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
+                itemCount: recordsProvider.records.length,
+                separatorBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
