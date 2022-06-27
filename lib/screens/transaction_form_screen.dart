@@ -31,16 +31,34 @@ class TransactionFormScreen extends StatelessWidget {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
-                      ),
-                      (route) => false,
-                    );
-                  },
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete Transaction'),
+                      content: const Text('Are you sure you want to delete this transaction?'),
+                      actions: [
+                        TextButton(
+                          child: const Text('CANCEL'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('DELETE'),
+                          onPressed: () {
+                            Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             )
@@ -57,22 +75,49 @@ class TransactionFormScreen extends StatelessWidget {
 
             //
             if (isEditing) {
-              Provider.of<RecordsProvider>(context, listen: false).updateRecord(
-                index: index!,
-                record: TransactionRecord.fromJson(data),
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Save Transaction'),
+                  content: const Text('Are you sure you want to update this transaction?'),
+                  actions: [
+                    TextButton(
+                      child: const Text('CANCEL'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('SAVE'),
+                      onPressed: () {
+                        Provider.of<RecordsProvider>(context, listen: false).updateRecord(
+                          index: index!,
+                          record: TransactionRecord.fromJson(data),
+                        );
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               );
             } else {
               Provider.of<RecordsProvider>(context, listen: false).insertRecord(
                 TransactionRecord.fromJson(data),
               );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainScreen(),
+                ),
+                (route) => false,
+              );
             }
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainScreen(),
-              ),
-              (route) => false,
-            );
           }
         },
         child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
@@ -97,7 +142,6 @@ class TransactionFormScreen extends StatelessWidget {
                             controller: GroupButtonController(selectedIndex: field.value ? 1 : 0),
                             onSelected: (_, index, isSelected) {
                               index == 1 ? field.didChange(true) : field.didChange(false);
-                              debugPrint(index.toString());
                             },
                             buttons: const ['-', '+'],
                             options: const GroupButtonOptions(
