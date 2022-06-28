@@ -1,10 +1,12 @@
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
+import 'package:expensee/widgets/account_card.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
+import '../providers/accounts_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,21 +23,29 @@ class HomeScreen extends StatelessWidget {
         ),
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(title: Text('Home'), actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: () => Provider.of<AccountsProvider>(context, listen: false).refresh(),
+        ),
+      ]),
       body: Column(
         children: [
-          SizedBox(
-            height: 50,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-              itemBuilder: (BuildContext context, int index) => Card(
-                child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Center(child: Text('Card Text $index'))),
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {
+              return SizedBox(
+                height: 80,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: accountsProvider.accounts.length,
+                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                  itemBuilder: (BuildContext context, int index) => AccountCard(
+                    account: accountsProvider.accounts[index],
+                  ),
+                ),
+              );
+            }),
           ),
           Consumer<RecordsProvider>(
             builder: (context, recordsProvider, child) {
@@ -48,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
                 itemCount: recordsProvider.records.length,
-                separatorBuilder: (context, index) => Padding(
+                separatorBuilder: (context, index) => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
                 ),
               );

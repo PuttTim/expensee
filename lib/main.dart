@@ -1,6 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:expensee/models/app_colours.dart';
+import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/providers/currencies_provider.dart';
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/main_screen.dart';
@@ -20,7 +21,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
-        ChangeNotifierProvider(create: (context) => RecordsProvider())
+        ChangeNotifierProvider(create: (context) => RecordsProvider()),
+        ChangeNotifierProvider(create: (context) => AccountsProvider())
       ],
       child: MyApp(sdkInt: androidInfo.version.sdkInt),
     ),
