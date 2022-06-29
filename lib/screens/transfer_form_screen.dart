@@ -65,10 +65,14 @@ class TransferFormScreen extends StatelessWidget {
           onPressed: () {
             if (_formKey.currentState!.saveAndValidate()) {
               double conversionRate;
+
+              // Checks if the currency from and to are the same, if they are not the same,
+              // then the conversionRate is calculated by fromAmount divided by toAmount,
+              // Otherwise, the conversionRate is 1.00 (i.e SGD to SGD is 1:1
               if (_formKey.currentState!.value['fromCurrency'] != _formKey.currentState!.value['toCurrency']) {
                 conversionRate = _formKey.currentState!.value['fromAmount'] / _formKey.currentState!.value['toAmount'];
               } else {
-                conversionRate = 0.00;
+                conversionRate = 1.00;
               }
 
               Map<String, dynamic> data = {
@@ -79,11 +83,48 @@ class TransferFormScreen extends StatelessWidget {
                     : double.parse(_formKey.currentState!.value['conversionRate']),
               };
 
-              Provider.of<RecordsProvider>(context, listen: false).insertRecord(TransferRecord.fromJson(data));
-              Navigator.of(context).pop();
-              // data.forEach((key, value) {
-              //   debugPrint('$key: $value');
-              // });
+              if (isEditing) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Edit Transaction'),
+                    content: const Text('Are you sure you want to update this transaction?'),
+                    actions: [
+                      TextButton(
+                        child: const Text('CANCEL'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('SAVE'),
+                        onPressed: () {
+                          Provider.of<RecordsProvider>(context, listen: false).updateRecord(
+                            index: index!,
+                            record: TransferRecord.fromJson(data),
+                          );
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                Provider.of<RecordsProvider>(context, listen: false).insertRecord(TransferRecord.fromJson(data));
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(),
+                  ),
+                  (route) => false,
+                );
+              }
             }
           },
         ),
@@ -210,9 +251,11 @@ class TransferFormScreen extends StatelessWidget {
                                 child: FormBuilderTextField(
                                   enabled: false,
                                   name: 'fromCurrency',
-                                  initialValue: Provider.of<AccountsProvider>(context, listen: true)
-                                      .currentAccount
-                                      .primaryCurrency,
+                                  initialValue: isEditing
+                                      ? record?.fromCurrency
+                                      : Provider.of<AccountsProvider>(context, listen: true)
+                                          .currentAccount
+                                          .primaryCurrency,
                                   style: const TextStyle(color: AppColours.moodyPurple, fontSize: 24),
                                   textAlign: TextAlign.center,
                                   decoration: const InputDecoration(
@@ -258,9 +301,11 @@ class TransferFormScreen extends StatelessWidget {
                                 child: FormBuilderTextField(
                                   enabled: false,
                                   name: 'toCurrency',
-                                  initialValue: Provider.of<AccountsProvider>(context, listen: true)
-                                      .currentAccount
-                                      .primaryCurrency,
+                                  initialValue: isEditing
+                                      ? record?.toCurrency
+                                      : Provider.of<AccountsProvider>(context, listen: true)
+                                          .currentAccount
+                                          .primaryCurrency,
                                   style: const TextStyle(color: AppColours.moodyPurple, fontSize: 24),
                                   textAlign: TextAlign.center,
                                   decoration: const InputDecoration(
@@ -365,7 +410,7 @@ class TransferFormScreen extends StatelessWidget {
                         style: const TextStyle(color: AppColours.moodyPurple),
                         decoration: const InputDecoration(
                           labelText: 'Conversion Rate',
-                          hintText: '0.00',
+                          hintText: '1.00',
                           hintStyle: TextStyle(color: AppColours.moodyPurple),
                           labelStyle: TextStyle(color: AppColours.moodyPurple),
                         ),

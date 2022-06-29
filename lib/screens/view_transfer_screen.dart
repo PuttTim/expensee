@@ -109,7 +109,7 @@ class ViewTransferScreen extends StatelessWidget {
               Text('Conversion Rate', style: titleStyle),
               const SizedBox(height: 8),
               Text(
-                '1.0 ${record.fromCurrency} / ${record.conversionRate} ${record.toCurrency}',
+                '1.0 ${record.fromCurrency} = ${record.conversionRate} ${record.toCurrency}',
                 style: subtitleStyle,
               ),
               const SizedBox(height: 16),

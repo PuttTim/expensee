@@ -108,7 +108,7 @@ class TransferRecordCard extends StatelessWidget {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          '@ 1.0 ${record.fromCurrency} / ${record.conversionRate}',
+                          '@ 1.0 ${record.fromCurrency} = ${record.conversionRate}',
                           textAlign: TextAlign.right,
                           style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
                         ),
