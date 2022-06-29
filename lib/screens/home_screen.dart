@@ -30,69 +30,71 @@ class HomeScreen extends StatelessWidget {
           onPressed: () => Provider.of<AccountsProvider>(context, listen: false).refresh(),
         ),
       ]),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Accounts',
-                  style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.add_circle_outline_rounded,
-                    color: AppColours.moodyPurple,
-                    size: 32,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Accounts',
+                    style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AccountDialogForm();
-                      },
-                    );
-                  },
-                )
-              ],
+                  IconButton(
+                    icon: const Icon(
+                      Icons.add_circle_outline_rounded,
+                      color: AppColours.moodyPurple,
+                      size: 32,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AccountDialogForm();
+                        },
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {
-              return SizedBox(
-                height: 80,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: accountsProvider.accounts.length,
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-                  itemBuilder: (BuildContext context, int index) => AccountCard(
-                    account: accountsProvider.accounts[index],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {
+                return SizedBox(
+                  height: 80,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: accountsProvider.accounts.length,
+                    separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                    itemBuilder: (BuildContext context, int index) => AccountCard(
+                      account: accountsProvider.accounts[index],
+                    ),
                   ),
-                ),
-              );
-            }),
-          ),
-          Consumer<RecordsProvider>(
-            builder: (context, recordsProvider, child) {
-              List<dynamic> records = recordsProvider.records;
-              // Sorts the transactions by DateTime, newest record first.
-              records.sort((a, b) {
-                return b.time.compareTo(a.time);
-              });
-              return ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
-                itemCount: recordsProvider.records.length,
-                separatorBuilder: (context, index) => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              }),
+            ),
+            Consumer<RecordsProvider>(
+              builder: (context, recordsProvider, child) {
+                List<dynamic> records = recordsProvider.records;
+                // Sorts the transactions by DateTime, newest record first.
+                records.sort((a, b) {
+                  return b.time.compareTo(a.time);
+                });
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
+                  itemCount: recordsProvider.records.length,
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

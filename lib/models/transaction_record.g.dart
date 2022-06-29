@@ -9,6 +9,7 @@ part of 'transaction_record.dart';
 TransactionRecord _$TransactionRecordFromJson(Map<String, dynamic> json) =>
     TransactionRecord(
       isPositive: json['isPositive'] as bool,
+      accountId: json['accountId'] as String,
       amount: (json['amount'] as num).toDouble(),
       currency: json['currency'] as String,
       type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
@@ -21,6 +22,7 @@ TransactionRecord _$TransactionRecordFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$TransactionRecordToJson(TransactionRecord instance) =>
     <String, dynamic>{
       'isPositive': instance.isPositive,
+      'accountId': instance.accountId,
       'amount': instance.amount,
       'currency': instance.currency,
       'type': _$TransactionTypeEnumMap[instance.type],

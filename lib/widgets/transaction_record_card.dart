@@ -61,10 +61,13 @@ class TransactionRecordCard extends StatelessWidget {
                         )
                       ],
                     ),
-                    Text(
-                      dateTimeToDisplayedTime(record.time),
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        dateTimeToDisplayedTime(record.time),
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                      ),
                     )
                   ],
                 ),

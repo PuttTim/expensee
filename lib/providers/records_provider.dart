@@ -8,6 +8,7 @@ class RecordsProvider with ChangeNotifier {
   List<dynamic> records = [
     TransactionRecord(
       isPositive: false,
+      accountId: '0',
       amount: -6.0,
       currency: 'SGD',
       type: TransactionType.cashless,
@@ -18,6 +19,7 @@ class RecordsProvider with ChangeNotifier {
     ),
     TransactionRecord(
       isPositive: false,
+      accountId: '0',
       amount: -19.89,
       currency: 'SGD',
       type: TransactionType.cash,
@@ -30,6 +32,22 @@ class RecordsProvider with ChangeNotifier {
 
   void insertRecord(TransactionRecord record) {
     records.add(record);
+
+    // Provider.of<AccountsProvider>(context, listen: false).modifyAccountValue(
+    //   record.accountId,
+    //   record.isPositive,
+    //   record.amount,
+    // );
+
+    debugPrint(record.note);
+    debugPrint(record.accountId);
+    debugPrint(record.payee);
+    debugPrint(record.category.toString());
+    debugPrint(record.time.toString());
+    debugPrint(record.amount.toString());
+    debugPrint(record.currency.toString());
+    debugPrint(record.type.toString());
+    debugPrint(record.isPositive.toString());
 
     notifyListeners();
   }

@@ -4,12 +4,14 @@ part 'account.g.dart';
 
 @JsonSerializable()
 class Account {
+  String id;
   String name;
   double value;
   String primaryCurrency;
   double budgetLimit;
 
   Account({
+    required this.id,
     required this.name,
     required this.value,
     required this.primaryCurrency,

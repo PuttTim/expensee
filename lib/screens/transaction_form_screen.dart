@@ -1,6 +1,6 @@
 import 'package:expensee/models/category.dart';
 import 'package:expensee/models/transaction_type_enum.dart';
-import 'package:expensee/providers/currencies_provider.dart';
+import 'package:expensee/providers/accounts_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -110,6 +110,11 @@ class TransactionFormScreen extends StatelessWidget {
               Provider.of<RecordsProvider>(context, listen: false).insertRecord(
                 TransactionRecord.fromJson(data),
               );
+              Provider.of<AccountsProvider>(context, listen: false).modifyAccountValue(
+                isPositive: data['isPositive'],
+                amount: data['amount'].abs(),
+                id: data['accountId'],
+              );
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -196,10 +201,12 @@ class TransactionFormScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderDropdown(
+                          // Disabled as advanced currency conversions requires Firebase Firestore to function as intended.
+                          enabled: false,
                           name: 'currency',
                           initialValue: isEditing
                               ? record?.currency
-                              : Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
+                              : Provider.of<AccountsProvider>(context, listen: true).currentAccount.primaryCurrency,
                           style:
                               const TextStyle(color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
                           items: ['EUR', 'SGD', 'THB', 'USD']
@@ -218,6 +225,47 @@ class TransactionFormScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 64, right: 8, left: 8),
                 child: Column(
                   children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(top: 16, bottom: 8),
+                      child: const Text(
+                        'Account',
+                        style: TextStyle(
+                          color: AppColours.forestryGreen,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    FormBuilderDropdown(
+                      name: 'accountId',
+                      initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
+                      onChanged: (value) {
+                        // Sets the currency displayed to the current account's primary currency.
+                        debugPrint(value.toString());
+
+                        _formKey.currentState!.fields['currency']?.didChange(
+                            Provider.of<AccountsProvider>(context, listen: false)
+                                .fetchAccount(value.toString())
+                                .primaryCurrency);
+                      },
+                      onSaved: (value) {
+                        debugPrint(value.toString());
+                        // _formKey.currentState!.fields['currency']?.didChange(
+                        //   Provider.of<AccountsProvider>(context, listen: true)
+                        //       .fetchAccount(value.accountId)
+                        //       .primaryCurrency,
+                        // );
+                      },
+                      style: const TextStyle(color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
+                      items: Provider.of<AccountsProvider>(context, listen: false)
+                          .accounts
+                          .map((account) => DropdownMenuItem(
+                                value: account.id,
+                                child: Text(account.name),
+                              ))
+                          .toList(),
+                    ),
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.only(top: 16, bottom: 8),

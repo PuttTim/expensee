@@ -29,11 +29,13 @@ class AccountDialogForm extends StatelessWidget {
           child: const Text('CREATE'),
           onPressed: () {
             if (_formKey.currentState!.saveAndValidate()) {
-              // _formKey.currentState!.value.forEach((key, value) {
-              //   debugPrint('$key: $value');
-              // });
+              Map<String, dynamic> data = {
+                ..._formKey.currentState!.value,
+                'id': (Provider.of<AccountsProvider>(context, listen: false).accounts.length + 1).toString(),
+              };
+
               Provider.of<AccountsProvider>(context, listen: false).addAccount(
-                Account.fromJson(_formKey.currentState!.value),
+                Account.fromJson(data),
               );
               Navigator.pop(context);
             }
@@ -156,6 +158,7 @@ class AccountDialogForm extends StatelessWidget {
                   // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(errorText: 'Amount is required'),
                     FormBuilderValidators.min(0, errorText: 'Invalid amount'),
                     FormBuilderValidators.numeric(errorText: 'Invalid amount'),
                   ]),

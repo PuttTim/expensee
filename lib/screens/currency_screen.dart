@@ -70,7 +70,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                               fontSize: 17,
                               color: AppColours.moodyPurple,
                             ),
-                            bottomSheetHeight: MediaQuery.of(context).size.height*0.8,
+                            bottomSheetHeight: MediaQuery.of(context).size.height / 2,
                             subtitleTextStyle: const TextStyle(
                               fontSize: 15,
                               color: AppColours.paleMoodyPurple,
