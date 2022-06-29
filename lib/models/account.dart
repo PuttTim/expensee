@@ -18,5 +18,6 @@ class Account {
     required this.budgetLimit,
   });
 
+  // JsonSerializable auto generated fromJson method.
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 }

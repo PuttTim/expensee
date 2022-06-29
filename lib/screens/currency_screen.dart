@@ -1,8 +1,10 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:expensee/models/app_colours.dart';
+import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/providers/currencies_provider.dart';
 import 'package:expensee/widgets/exchange_rates_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/currency_rates.dart';
@@ -87,10 +89,18 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             ),
             Consumer<CurrenciesProvider>(
               builder: (context, currenciesProvider, child) => FutureBuilder<CurrencyRates>(
-                future: currenciesProvider.getCurrencyRate(currenciesProvider.primaryCurrency),
+                future: currenciesProvider.getCurrencyRate(
+                    Provider.of<AccountsProvider>(context, listen: true).currentAccount.primaryCurrency),
                 builder: (context, snapshot) {
+                  debugPrint(snapshot.data?.toString());
                   if (snapshot.connectionState == ConnectionState.done) {
-                    CurrencyRates data = snapshot.data!;
+                    DateFormat format = DateFormat('yyyy-MM-dd');
+                    CurrencyRates data = snapshot.data ??
+                        CurrencyRates(
+                          base: 'SGD',
+                          date: format.format(DateTime.now()),
+                          rates: {'EUR': 0.68, 'THB': 25.25, 'USD': 0.72},
+                        );
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [

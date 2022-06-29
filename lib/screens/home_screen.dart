@@ -27,12 +27,9 @@ class HomeScreen extends StatelessWidget {
         ),
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
-      appBar: AppBar(title: const Text('Home'), actions: [
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: () => Provider.of<AccountsProvider>(context, listen: false).refresh(),
-        ),
-      ]),
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -78,6 +75,15 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               }),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 16),
+              child: const Text(
+                'Records',
+                style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
+              ),
             ),
             Consumer<RecordsProvider>(
               builder: (context, recordsProvider, child) {
