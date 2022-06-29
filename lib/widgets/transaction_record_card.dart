@@ -85,9 +85,10 @@ class TransactionRecordCard extends StatelessWidget {
                           '${record.amount} ${record.currency}',
                           textAlign: TextAlign.right,
                           style: TextStyle(
-                              color: record.isPositive ? AppColours.splitPurple : AppColours.feistyOrange,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24),
+                            color: record.isPositive ? AppColours.splitPurple : AppColours.feistyOrange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       const Text(''),

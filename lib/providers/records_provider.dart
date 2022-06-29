@@ -1,8 +1,10 @@
 import 'package:expensee/models/transaction_record.dart';
 import 'package:expensee/models/transaction_type_enum.dart';
+import 'package:expensee/models/transfer_record.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/category.dart';
+import '../models/transfer_type_enum.dart';
 
 class RecordsProvider with ChangeNotifier {
   List<dynamic> records = [
@@ -27,6 +29,18 @@ class RecordsProvider with ChangeNotifier {
       category: Category.shopping,
       time: DateTime.parse('2022-05-09 23:55'),
       note: 'UT T-Shirt!',
+    ),
+    TransferRecord(
+      fromAccountId: '3',
+      toAccountId: '1',
+      fromCurrency: 'THB',
+      toCurrency: 'SGD',
+      fromAmount: 250,
+      toAmount: 10,
+      type: TransferType.transfer,
+      time: DateTime(2020, 1, 1),
+      conversionRate: 1.5,
+      note: '',
     )
   ];
 
