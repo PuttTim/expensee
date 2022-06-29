@@ -27,7 +27,7 @@ class TransactionFormScreen extends StatelessWidget {
     return Scaffold(
       appBar: isEditing
           ? AppBar(
-              title: Text(isEditing ? 'Edit Transaction' : 'New Transaction'),
+              title: const Text('Edit Transaction'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.delete),
@@ -242,20 +242,10 @@ class TransactionFormScreen extends StatelessWidget {
                       initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                       onChanged: (value) {
                         // Sets the currency displayed to the current account's primary currency.
-                        debugPrint(value.toString());
-
                         _formKey.currentState!.fields['currency']?.didChange(
                             Provider.of<AccountsProvider>(context, listen: false)
                                 .fetchAccount(value.toString())
                                 .primaryCurrency);
-                      },
-                      onSaved: (value) {
-                        debugPrint(value.toString());
-                        // _formKey.currentState!.fields['currency']?.didChange(
-                        //   Provider.of<AccountsProvider>(context, listen: true)
-                        //       .fetchAccount(value.accountId)
-                        //       .primaryCurrency,
-                        // );
                       },
                       style: const TextStyle(color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
                       items: Provider.of<AccountsProvider>(context, listen: false)

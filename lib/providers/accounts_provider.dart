@@ -6,8 +6,22 @@ class AccountsProvider with ChangeNotifier {
   List<Account> accounts = [
     Account(
       id: '1',
-      name: 'All',
+      name: 'Wallet',
       primaryCurrency: 'SGD',
+      value: 2500.0,
+      budgetLimit: 0.0,
+    ),
+    Account(
+      id: '2',
+      name: 'OCBC Frank',
+      primaryCurrency: 'SGD',
+      value: 250.0,
+      budgetLimit: 0.0,
+    ),
+    Account(
+      id: '3',
+      name: 'SCB Savings',
+      primaryCurrency: 'THB',
       value: 2500.0,
       budgetLimit: 0.0,
     ),
