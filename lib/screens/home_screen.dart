@@ -1,6 +1,7 @@
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
 import 'package:expensee/widgets/account_card.dart';
+import 'package:expensee/widgets/account_dialog_form.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,33 @@ class HomeScreen extends StatelessWidget {
       ]),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Accounts',
+                  style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.add_circle_outline_rounded,
+                    color: AppColours.moodyPurple,
+                    size: 32,
+                  ),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return AccountDialogForm();
+                      },
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {

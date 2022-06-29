@@ -24,7 +24,7 @@ class AccountsProvider with ChangeNotifier {
     ),
   ];
 
-  late Account currentAccount;
+  late Account currentAccount = accounts[0];
 
   void setCurrentAccount(Account account) {
     debugPrint('setCurrentAccount: ${account.name}');
