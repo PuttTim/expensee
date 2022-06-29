@@ -15,6 +15,7 @@ class ViewTransactionScreen extends StatelessWidget {
   final TransactionRecord record;
   final int index;
 
+  /// TextStyles for the title and subtitle Texts within the View Screen
   final TextStyle titleStyle = const TextStyle(
     color: AppColours.forestryGreen,
     fontSize: 28,
@@ -127,8 +128,8 @@ class ViewTransactionScreen extends StatelessWidget {
                   children: [
                     Icon(categoryToIcon(record.category), color: AppColours.transactionGreen),
                     Text(
-                      // Capitalises the first letter of the Category's name.
-                      // As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
+                      /// Capitalises the first letter of the Category's name.
+                      /// As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
                       record.category.name.capitalize(),
                       style: subtitleStyle,
                     )
@@ -164,7 +165,8 @@ class ViewTransactionScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                // Ternary to ensure there is a Note before displaying the title.
+
+                /// Ternary to ensure there is a Note before displaying the title.
                 child: Text(record.note!.isNotEmpty ? "Note" : "", style: titleStyle),
               ),
               const SizedBox(height: 8),

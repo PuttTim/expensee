@@ -28,7 +28,11 @@ class AccountDialogForm extends StatelessWidget {
         TextButton(
           child: const Text('CREATE'),
           onPressed: () {
+            /// Checks if all form states are saved and validated.
             if (_formKey.currentState!.saveAndValidate()) {
+              /// Duplicates the form's data into a map and adds in the key 'id',
+              /// which is the next index inside the accounts list inside AccountsProvider
+              /// TODO: Update to Firestore's id system
               Map<String, dynamic> data = {
                 ..._formKey.currentState!.value,
                 'id': (Provider.of<AccountsProvider>(context, listen: false).accounts.length + 1).toString(),
@@ -39,13 +43,11 @@ class AccountDialogForm extends StatelessWidget {
               );
               Navigator.pop(context);
             }
-            // Navigator.pop(context);
           },
         ),
       ],
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
-        // height: MediaQuery.of(context).size.height * 0.6,
         child: FormBuilder(
           key: _formKey,
           child: SingleChildScrollView(
@@ -65,7 +67,6 @@ class AccountDialogForm extends StatelessWidget {
                 ),
                 FormBuilderTextField(
                   name: 'name',
-                  // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(errorText: 'Account name is required'),
@@ -100,8 +101,6 @@ class AccountDialogForm extends StatelessWidget {
                   name: 'value',
                   keyboardType: TextInputType.number,
                   valueTransformer: (value) => double.parse(value!),
-
-                  // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(errorText: 'Amount is required'),
@@ -128,9 +127,6 @@ class AccountDialogForm extends StatelessWidget {
                 ),
                 FormBuilderDropdown(
                   name: 'primaryCurrency',
-                  // initialValue: isEditing
-                  //     ? record?.currency
-                  //     : Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
                   style: const TextStyle(color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
                   items: ['EUR', 'SGD', 'THB', 'USD']
                       .map((currency) => DropdownMenuItem(
@@ -155,7 +151,6 @@ class AccountDialogForm extends StatelessWidget {
                   name: 'budgetLimit',
                   keyboardType: TextInputType.number,
                   valueTransformer: (value) => double.parse(value!),
-                  // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(errorText: 'Amount is required'),

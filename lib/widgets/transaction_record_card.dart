@@ -56,8 +56,8 @@ class TransactionRecordCard extends StatelessWidget {
                         children: [
                           Icon(categoryToIcon(record.category), color: AppColours.transactionGreen),
                           Text(
-                            // Capitalises the first letter of the Category's name.
-                            // As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
+                            /// Capitalises the first letter of the Category's name.
+                            /// As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
                             record.category.name.capitalize(),
                             style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
                           )

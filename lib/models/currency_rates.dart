@@ -10,6 +10,6 @@ class CurrencyRates {
 
   CurrencyRates({required this.base, required this.date, required this.rates});
 
-  factory CurrencyRates.fromJson(Map<String, dynamic> json) =>
-      _$CurrencyRatesFromJson(json);
+  // JsonSerializable auto generated fromJson method.
+  factory CurrencyRates.fromJson(Map<String, dynamic> json) => _$CurrencyRatesFromJson(json);
 }

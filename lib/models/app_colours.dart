@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// The application's app colours! These are some of the best names I can come up with :)
 class AppColours {
   static const Color wittyWhite = Color(0xFFFAFAFA);
   static const Color blackestBlack = Color(0xFF000000);

@@ -16,7 +16,8 @@ class AccountCard extends StatelessWidget {
     return Container(
       width: 128,
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      // padding: EdgeInsets.symmetric(horizontal: 16),
+
+      /// GestureDetector allows for tapping on the card to select it.
       child: GestureDetector(
         onTap: () => Provider.of<AccountsProvider>(context, listen: false).setCurrentAccount(account),
         child: Material(

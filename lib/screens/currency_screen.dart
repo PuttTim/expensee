@@ -88,6 +88,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
               ),
             ),
             Consumer<CurrenciesProvider>(
+              /// Get the list of currencies from the Future getCurrencyRate() defined inside
               builder: (context, currenciesProvider, child) => FutureBuilder<CurrencyRates>(
                 future: currenciesProvider.getCurrencyRate(
                     Provider.of<AccountsProvider>(context, listen: true).currentAccount.primaryCurrency),
@@ -152,7 +153,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             ),
             const SizedBox(height: 16),
             const ElevatedButton(
-              // Placeholder for a future feature as this requires Firestore usage.
+              /// Placeholder for a future feature as this requires Firestore usage.
               onPressed: null,
               child: Text(
                 'Add secondary currency',

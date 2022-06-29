@@ -25,6 +25,8 @@ class TransactionFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /// Checks if the user is editing a record or creating a new one.
+      /// If the user is editing, then they have the option to delete the record.
       appBar: isEditing
           ? AppBar(
               title: const Text('Edit Transaction'),
@@ -63,10 +65,15 @@ class TransactionFormScreen extends StatelessWidget {
               ],
             )
           : null,
+
+      /// The FAB changes Icons depending on whether the user is editing or creating a new record.
       floatingActionButton: FloatingActionButton(
         child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
         onPressed: () {
+          /// Checks if all form states are saved and validated.
           if (_formKey.currentState!.saveAndValidate()) {
+            /// Duplicates the form's data into a map and adds in the key 'amount',
+            /// which has an appropriate value for whether or not the amount is positive.
             Map<String, dynamic> data = {
               ..._formKey.currentState!.value,
               'amount': _formKey.currentState!.value['isPositive']
@@ -74,7 +81,8 @@ class TransactionFormScreen extends StatelessWidget {
                   : (-_formKey.currentState!.value['amount']),
             };
 
-            //
+            /// If the user is editing, then the record is updated,
+            /// otherwise the record is created and inserted into the records list inside RecordsProvider
             if (isEditing) {
               showDialog(
                 context: context,
@@ -127,7 +135,8 @@ class TransactionFormScreen extends StatelessWidget {
           }
         },
       ),
-      // SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
+
+      /// SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
       body: SingleChildScrollView(
         child: FormBuilder(
           key: _formKey,
@@ -201,7 +210,7 @@ class TransactionFormScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: FormBuilderDropdown(
-                          // Disabled as advanced currency conversions requires Firebase Firestore to function as intended.
+                          /// Disabled as advanced currency conversions requires Firebase Firestore to function as intended.
                           enabled: false,
                           name: 'currency',
                           initialValue: isEditing
@@ -241,7 +250,7 @@ class TransactionFormScreen extends StatelessWidget {
                       name: 'accountId',
                       initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                       onChanged: (value) {
-                        // Sets the currency displayed to the current account's primary currency.
+                        /// Sets the currency displayed to the current account's primary currency.
                         _formKey.currentState!.fields['currency']?.didChange(
                             Provider.of<AccountsProvider>(context, listen: false)
                                 .fetchAccount(value.toString())
@@ -348,7 +357,8 @@ class TransactionFormScreen extends StatelessWidget {
                     FormBuilderDropdown(
                       name: 'category',
                       initialValue: isEditing ? record?.category : Category.food,
-                      // No validator is required here as there is an initialValue set to Category.food
+
+                      /// No validator is required here as there is an initialValue set to Category.food
                       valueTransformer: (value) => value?.toString().split('.').last,
                       items: categories
                           .map((category) => DropdownMenuItem(

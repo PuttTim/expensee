@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/app_colours.dart';
 import 'currency_screen.dart';
 import 'home_screen.dart';
-import 'splits_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,8 +13,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentScreenIndex = 0;
-  List<Widget> screens = const [HomeScreen(), CurrencyScreen(), SplitsScreen()];
+  List<Widget> screens = const [HomeScreen(), CurrencyScreen()];
 
+  /// This screen holds the two main screens; Home and Currency Screens.
+  /// The Home Screen is the default screen.
+  /// The Currency Screen is the screen that shows the list of currencies.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,11 +56,6 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.currency_exchange_outlined),
               label: 'Currencies',
             ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.sync_alt_rounded),
-              icon: Icon(Icons.sync_alt_outlined),
-              label: 'Bill Splits',
-            )
           ],
         ),
       ),

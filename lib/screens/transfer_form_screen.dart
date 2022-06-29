@@ -22,6 +22,9 @@ class TransferFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+        /// Checks if the user is editing a record or creating a new one.
+        /// If the user is editing, then they have the option to delete the record.
         appBar: isEditing
             ? AppBar(
                 title: const Text('Edit Transaction'),
@@ -60,21 +63,26 @@ class TransferFormScreen extends StatelessWidget {
                 ],
               )
             : null,
+
+        /// The FAB changes Icons depending on whether the user is editing or creating a new record.
         floatingActionButton: FloatingActionButton(
           child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
           onPressed: () {
+            /// Checks if all form states are saved and validated.
             if (_formKey.currentState!.saveAndValidate()) {
               double conversionRate;
 
-              // Checks if the currency from and to are the same, if they are not the same,
-              // then the conversionRate is calculated by fromAmount divided by toAmount,
-              // Otherwise, the conversionRate is 1.00 (i.e SGD to SGD is 1:1
+              /// Checks if the currency from and to are the same, if they are not the same,
+              /// then the conversionRate is calculated by fromAmount divided by toAmount,
+              /// Otherwise, the conversionRate is 1.00 (i.e SGD to SGD is 1:1
               if (_formKey.currentState!.value['fromCurrency'] != _formKey.currentState!.value['toCurrency']) {
                 conversionRate = _formKey.currentState!.value['fromAmount'] / _formKey.currentState!.value['toAmount'];
               } else {
                 conversionRate = 1.00;
               }
 
+              /// Duplicates the form's data into a map and adds in the key 'conversionRate',
+              /// which if the original value is null OR empty, it will become the above declared conversionRate
               Map<String, dynamic> data = {
                 ..._formKey.currentState!.value,
                 'conversionRate': _formKey.currentState!.value['conversionRate'] == null ||
@@ -83,6 +91,8 @@ class TransferFormScreen extends StatelessWidget {
                     : double.parse(_formKey.currentState!.value['conversionRate']),
               };
 
+              /// If the user is editing, then the record is updated,
+              /// otherwise the record is created and inserted into the records list inside RecordsProvider
               if (isEditing) {
                 showDialog(
                   context: context,
@@ -128,6 +138,8 @@ class TransferFormScreen extends StatelessWidget {
             }
           },
         ),
+
+        /// SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
         body: SingleChildScrollView(
           child: FormBuilder(
             key: _formKey,
@@ -167,7 +179,7 @@ class TransferFormScreen extends StatelessWidget {
                                 ? record?.fromAccountId
                                 : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                             onChanged: (value) {
-                              // Sets the currency displayed to the current account's primary currency.
+                              /// Sets the currency displayed to the current account's primary currency.
                               _formKey.currentState!.fields['fromCurrency']?.didChange(
                                   Provider.of<AccountsProvider>(context, listen: false)
                                       .fetchAccount(value.toString())
@@ -195,7 +207,7 @@ class TransferFormScreen extends StatelessWidget {
                                 ? record?.toAccountId
                                 : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                             onChanged: (value) {
-                              // Sets the currency displayed to the current account's primary currency.
+                              /// Sets the currency displayed to the current account's primary currency.
                               _formKey.currentState!.fields['toCurrency']?.didChange(
                                   Provider.of<AccountsProvider>(context, listen: false)
                                       .fetchAccount(value.toString())
@@ -331,7 +343,8 @@ class TransferFormScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       FormBuilderRadioGroup(
                         name: 'type',
-                        // No validator needed as we have an initialValue defined.
+
+                        /// No validator needed as we have an initialValue defined.
                         initialValue: isEditing ? record?.type : TransferType.transfer,
                         activeColor: AppColours.moodyPurple,
                         focusColor: AppColours.moodyPurple,

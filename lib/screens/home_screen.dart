@@ -88,20 +88,26 @@ class HomeScreen extends StatelessWidget {
             Consumer<RecordsProvider>(
               builder: (context, recordsProvider, child) {
                 List<dynamic> records = recordsProvider.records;
-                // Sorts the transactions by DateTime, newest record first.
+
+                /// Sorts the transactions by DateTime, newest record first.
                 records.sort((a, b) {
                   return b.time.compareTo(a.time);
                 });
                 return ListView.separated(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
+                    /// and then returns the appropriate widget for that record type.
                     if (records[index].runtimeType == TransactionRecord) {
                       return TransactionRecordCard(
                         record: records[index],
                         index: index,
                       );
                     } else if (records[index].runtimeType == TransferRecord) {
-                      return TransferRecordCard(record: records[index], index: index);
+                      return TransferRecordCard(
+                        record: records[index],
+                        index: index,
+                      );
                     } else {
                       return Container();
                     }

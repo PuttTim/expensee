@@ -28,5 +28,6 @@ class TransactionRecord {
     this.note,
   });
 
+  // JsonSerializable auto generated fromJson method.
   factory TransactionRecord.fromJson(Map<String, dynamic> json) => _$TransactionRecordFromJson(json);
 }

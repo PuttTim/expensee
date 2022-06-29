@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+/// Enum for the Category type.
 enum Category {
   @JsonValue("food")
   food,
@@ -14,6 +15,7 @@ enum Category {
   others,
 }
 
+/// List of categories with it's name, Icon and Category values.
 List<Map<String, dynamic>> categories = [
   {
     'name': 'Food',

@@ -29,5 +29,6 @@ class TransferRecord {
     this.note,
   });
 
+  // JsonSerializable auto generated fromJson method.
   factory TransferRecord.fromJson(Map<String, dynamic> json) => _$TransferRecordFromJson(json);
 }

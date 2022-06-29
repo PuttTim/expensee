@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/account.dart';
 
 class AccountsProvider with ChangeNotifier {
+  /// List of default accounts provided inside the Application for testing purposes.
   List<Account> accounts = [
     Account(
       id: '1',
@@ -27,50 +28,45 @@ class AccountsProvider with ChangeNotifier {
     ),
   ];
 
+  /// Default set the currentAccount to the Wallet account.
   late Account currentAccount = accounts[0];
 
+  /// Sets the currentAccount by passing in an [Account] object.
   void setCurrentAccount(Account account) {
-    // debugPrint('setCurrentAccount: ${account.name}');
     currentAccount = account;
     notifyListeners();
   }
 
+  /// Adds an account to the list by passing in an [Account] object.
   void addAccount(Account account) {
     accounts.add(account);
 
-    debugPrint(account.id);
     notifyListeners();
   }
 
+  /// Modifies the value of an account by passing in id, isPositive and amount].
   modifyAccountValue({
     required String id,
     required bool isPositive,
     required double amount,
   }) async {
+    /// Searches the list of accounts for the account with the id passed in.
     final account = accounts.firstWhere((account) => account.id == id);
 
-    debugPrint('ACCOUNT ID ${account.id}');
-
+    /// Actually modifies the account's value with a ternary operator.
     account.value += isPositive ? amount : -amount;
 
-    // if (isPositive) {
-    //   account.value += amount;
-    // } else {
-    //   account.value -= amount;
-    // }
     notifyListeners();
   }
 
+  /// Sets the primary currency of the account.
   void setPrimaryCurrency(String currency) {
     currentAccount.primaryCurrency = currency;
     notifyListeners();
   }
 
+  /// Fetches the account with the id passed in.
   Account fetchAccount(String id) {
     return accounts.firstWhere((account) => account.id == id);
-  }
-
-  void refresh() {
-    notifyListeners();
   }
 }

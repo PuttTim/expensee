@@ -7,6 +7,7 @@ import '../models/category.dart';
 import '../models/transfer_type_enum.dart';
 
 class RecordsProvider with ChangeNotifier {
+  /// List of default records provided inside the Application for testing purposes.
   List<dynamic> records = [
     TransactionRecord(
       isPositive: false,
@@ -44,35 +45,24 @@ class RecordsProvider with ChangeNotifier {
     )
   ];
 
+  /// Adds an record to the list by passing in an [TransactionRecord] or [TransferRecord] object.
   void insertRecord(dynamic record) {
     records.add(record);
-
-    // Provider.of<AccountsProvider>(context, listen: false).modifyAccountValue(
-    //   record.accountId,
-    //   record.isPositive,
-    //   record.amount,
-    // );
-
-    // debugPrint(record.note);
-    // debugPrint(record.accountId);
-    // debugPrint(record.payee);
-    // debugPrint(record.category.toString());
-    // debugPrint(record.time.toString());
-    // debugPrint(record.amount.toString());
-    // debugPrint(record.currency.toString());
-    // debugPrint(record.type.toString());
-    // debugPrint(record.isPositive.toString());
 
     notifyListeners();
   }
 
+  /// Modifies the value of an record by passing in the index and the new updated record].
   void updateRecord({required int index, required dynamic record}) {
+    /// Removes the record object at the index,
+    /// then inserts in the new updated record at the same index.
     records.removeAt(index);
     records.insert(index, record);
 
     notifyListeners();
   }
 
+  /// Removes an record from the list by passing in the index.
   void deleteRecord({required int index}) {
     records.removeAt(index);
 

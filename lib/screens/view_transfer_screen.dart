@@ -14,6 +14,7 @@ class ViewTransferScreen extends StatelessWidget {
   final TransferRecord record;
   final int index;
 
+  /// TextStyles for the title and subtitle Texts within the View Screen
   final TextStyle titleStyle = const TextStyle(
     color: AppColours.forestryGreen,
     fontSize: 28,
