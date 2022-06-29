@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/app_colours.dart';
+import '../providers/accounts_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
 class AccountDialogForm extends StatelessWidget {
@@ -26,11 +29,15 @@ class AccountDialogForm extends StatelessWidget {
           child: const Text('CREATE'),
           onPressed: () {
             if (_formKey.currentState!.saveAndValidate()) {
-              _formKey.currentState!.value.forEach((key, value) {
-                debugPrint('$key: $value');
-              });
+              // _formKey.currentState!.value.forEach((key, value) {
+              //   debugPrint('$key: $value');
+              // });
+              Provider.of<AccountsProvider>(context, listen: false).addAccount(
+                Account.fromJson(_formKey.currentState!.value),
+              );
+              Navigator.pop(context);
             }
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
         ),
       ],
@@ -90,6 +97,8 @@ class AccountDialogForm extends StatelessWidget {
                 FormBuilderTextField(
                   name: 'value',
                   keyboardType: TextInputType.number,
+                  valueTransformer: (value) => double.parse(value!),
+
                   // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([
@@ -116,7 +125,7 @@ class AccountDialogForm extends StatelessWidget {
                   ),
                 ),
                 FormBuilderDropdown(
-                  name: 'currency',
+                  name: 'primaryCurrency',
                   // initialValue: isEditing
                   //     ? record?.currency
                   //     : Provider.of<CurrenciesProvider>(context, listen: false).primaryCurrency,
@@ -143,6 +152,7 @@ class AccountDialogForm extends StatelessWidget {
                 FormBuilderTextField(
                   name: 'budgetLimit',
                   keyboardType: TextInputType.number,
+                  valueTransformer: (value) => double.parse(value!),
                   // initialValue: isEditing ? record?.payee : '',
                   style: const TextStyle(color: AppColours.moodyPurple),
                   validator: FormBuilderValidators.compose([

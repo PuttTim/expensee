@@ -10,18 +10,6 @@ class AccountsProvider with ChangeNotifier {
       value: 0.0,
       budgetLimit: 0.0,
     ),
-    Account(
-      name: 'Credit Card',
-      primaryCurrency: 'SGD',
-      value: 0.0,
-      budgetLimit: 0.0,
-    ),
-    Account(
-      name: 'Bank Account',
-      primaryCurrency: 'SGD',
-      value: 0,
-      budgetLimit: 0.0,
-    ),
   ];
 
   late Account currentAccount = accounts[0];
@@ -29,6 +17,11 @@ class AccountsProvider with ChangeNotifier {
   void setCurrentAccount(Account account) {
     debugPrint('setCurrentAccount: ${account.name}');
     currentAccount = account;
+    notifyListeners();
+  }
+
+  void addAccount(Account account) {
+    accounts.add(account);
     notifyListeners();
   }
 
