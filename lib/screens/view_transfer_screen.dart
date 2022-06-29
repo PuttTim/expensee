@@ -127,7 +127,7 @@ class ViewTransferScreen extends StatelessWidget {
                 style: subtitleStyle,
               ),
               const SizedBox(height: 16),
-              Text(record.note!.isNotEmpty ? "Note" : '', style: titleStyle),
+              Text("Note", style: titleStyle),
               const SizedBox(height: 8),
               Text(
                 record.note ?? '',

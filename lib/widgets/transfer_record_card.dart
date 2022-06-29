@@ -40,36 +40,39 @@ class TransferRecordCard extends StatelessWidget {
               ),
               Expanded(
                 flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.fromAccountId).name,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style:
-                            const TextStyle(color: AppColours.transferTeal, fontSize: 24, fontWeight: FontWeight.w600),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.fromAccountId).name,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                              color: AppColours.transferTeal, fontSize: 24, fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        '-${record.fromAmount.toString()}',
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(color: AppColours.feistyOrange, fontSize: 24),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          '-${record.fromAmount.toString()}',
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: AppColours.feistyOrange, fontSize: 24),
+                        ),
                       ),
-                    ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        dateTimeToDisplayedTime(record.time),
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
-                      ),
-                    )
-                  ],
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          dateTimeToDisplayedTime(record.time),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Icon(

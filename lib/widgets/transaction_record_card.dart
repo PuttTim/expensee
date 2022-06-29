@@ -40,36 +40,39 @@ class TransactionRecordCard extends StatelessWidget {
               ),
               Expanded(
                 flex: 4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      record.payee,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: AppColours.transactionGreen, fontSize: 24, fontWeight: FontWeight.w600),
-                    ),
-                    Row(
-                      children: [
-                        Icon(categoryToIcon(record.category), color: AppColours.transactionGreen),
-                        Text(
-                          // Capitalises the first letter of the Category's name.
-                          // As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
-                          record.category.name.capitalize(),
-                          style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
-                        )
-                      ],
-                    ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        dateTimeToDisplayedTime(record.time),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        record.payee,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
-                        style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                        style: const TextStyle(
+                            color: AppColours.transactionGreen, fontSize: 24, fontWeight: FontWeight.w600),
                       ),
-                    )
-                  ],
+                      Row(
+                        children: [
+                          Icon(categoryToIcon(record.category), color: AppColours.transactionGreen),
+                          Text(
+                            // Capitalises the first letter of the Category's name.
+                            // As changing the enum's value (i.e shopping) to 'Shopping' would be against naming conventions.
+                            record.category.name.capitalize(),
+                            style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                          )
+                        ],
+                      ),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          dateTimeToDisplayedTime(record.time),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(color: AppColours.forestryGreen, fontSize: 16),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Expanded(

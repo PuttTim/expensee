@@ -3,10 +3,13 @@ import 'package:expensee/screens/new_record_screen.dart';
 import 'package:expensee/widgets/account_card.dart';
 import 'package:expensee/widgets/account_dialog_form.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
+import 'package:expensee/widgets/transfer_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
+import '../models/transaction_record.dart';
+import '../models/transfer_record.dart';
 import '../providers/accounts_provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -85,10 +88,21 @@ class HomeScreen extends StatelessWidget {
                 });
                 return ListView.separated(
                   shrinkWrap: true,
-                  itemBuilder: (context, index) => TransactionRecordCard(record: records[index], index: index),
+                  itemBuilder: (context, index) {
+                    if (records[index].runtimeType == TransactionRecord) {
+                      return TransactionRecordCard(
+                        record: records[index],
+                        index: index,
+                      );
+                    } else if (records[index].runtimeType == TransferRecord) {
+                      return TransferRecordCard(record: records[index], index: index);
+                    } else {
+                      return Container();
+                    }
+                  },
                   itemCount: recordsProvider.records.length,
                   separatorBuilder: (context, index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
+                    padding: EdgeInsets.symmetric(vertical: 2),
                   ),
                 );
               },
