@@ -64,6 +64,7 @@ class TransactionFormScreen extends StatelessWidget {
             )
           : null,
       floatingActionButton: FloatingActionButton(
+        child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
         onPressed: () {
           if (_formKey.currentState!.saveAndValidate()) {
             Map<String, dynamic> data = {
@@ -125,7 +126,6 @@ class TransactionFormScreen extends StatelessWidget {
             }
           }
         },
-        child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
       ),
       // SingleChildScrollView allows the Keyboard when opened up, to not overflow the entire screen.
       body: SingleChildScrollView(

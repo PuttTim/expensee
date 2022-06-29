@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/transfer_record.dart';
 import '../models/transfer_type_enum.dart';
 import '../providers/accounts_provider.dart';
+import 'main_screen.dart';
 
 class TransferFormScreen extends StatelessWidget {
   TransferFormScreen({Key? key, this.isEditing = false, this.record, this.index}) : super(key: key);
@@ -21,7 +22,46 @@ class TransferFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: isEditing
+            ? AppBar(
+                title: const Text('Edit Transaction'),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Delete Transaction'),
+                        content: const Text('Are you sure you want to delete this transaction?'),
+                        actions: [
+                          TextButton(
+                            child: const Text('CANCEL'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('DELETE'),
+                            onPressed: () {
+                              Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : null,
         floatingActionButton: FloatingActionButton(
+          child: Icon(isEditing ? Icons.save_rounded : Icons.done, color: AppColours.wittyWhite),
           onPressed: () {
             if (_formKey.currentState!.saveAndValidate()) {
               double conversionRate;
@@ -30,10 +70,6 @@ class TransferFormScreen extends StatelessWidget {
               } else {
                 conversionRate = 0.00;
               }
-              // debugPrint(conversionRate.toString());
-
-              // debugPrint(_formKey.currentState!.value['conversionRate'].runtimeType.toString());
-              // debugPrint(_formKey.currentState!.value['conversionRate']);
 
               Map<String, dynamic> data = {
                 ..._formKey.currentState!.value,
@@ -86,7 +122,9 @@ class TransferFormScreen extends StatelessWidget {
                         Expanded(
                           child: FormBuilderDropdown(
                             name: 'fromAccountId',
-                            initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
+                            initialValue: isEditing
+                                ? record?.fromAccountId
+                                : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                             onChanged: (value) {
                               // Sets the currency displayed to the current account's primary currency.
                               _formKey.currentState!.fields['fromCurrency']?.didChange(
@@ -112,7 +150,9 @@ class TransferFormScreen extends StatelessWidget {
                         Expanded(
                           child: FormBuilderDropdown(
                             name: 'toAccountId',
-                            initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
+                            initialValue: isEditing
+                                ? record?.toAccountId
+                                : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
                             onChanged: (value) {
                               // Sets the currency displayed to the current account's primary currency.
                               _formKey.currentState!.fields['toCurrency']?.didChange(
@@ -141,7 +181,7 @@ class TransferFormScreen extends StatelessWidget {
                             flex: 8,
                             child: FormBuilderTextField(
                               name: 'fromAmount',
-                              // initialValue: isEditing ? record?.amount.abs().toString() : '',
+                              initialValue: isEditing ? record?.fromAmount.abs().toString() : '',
                               keyboardType: TextInputType.number,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(errorText: 'Amount is required'),
@@ -189,7 +229,7 @@ class TransferFormScreen extends StatelessWidget {
                             flex: 8,
                             child: FormBuilderTextField(
                               name: 'toAmount',
-                              // initialValue: isEditing ? record?.amount.abs().toString() : '',
+                              initialValue: isEditing ? record?.toAmount.abs().toString() : '',
                               keyboardType: TextInputType.number,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(errorText: 'Amount is required'),
@@ -246,11 +286,11 @@ class TransferFormScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       FormBuilderRadioGroup(
                         name: 'type',
-                        initialValue: TransferType.transfer,
+                        // No validator needed as we have an initialValue defined.
+                        initialValue: isEditing ? record?.type : TransferType.transfer,
                         activeColor: AppColours.moodyPurple,
                         focusColor: AppColours.moodyPurple,
                         hoverColor: AppColours.moodyPurple,
-                        // No validator needed as we have an initialValue defined.
                         valueTransformer: (value) => value?.toString().split('.').last,
                         options: const [
                           FormBuilderFieldOption(
@@ -285,7 +325,7 @@ class TransferFormScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       FormBuilderDateTimePicker(
                         name: 'time',
-                        initialValue: DateTime.now(),
+                        initialValue: isEditing ? record?.time : DateTime.now(),
                         style: const TextStyle(color: AppColours.moodyPurple),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
@@ -316,9 +356,9 @@ class TransferFormScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       FormBuilderTextField(
                         name: 'conversionRate',
+                        initialValue: isEditing ? record?.conversionRate.toString() : '',
                         keyboardType: TextInputType.number,
                         validator: FormBuilderValidators.compose([
-                          // FormBuilderValidators.required(errorText: 'Conversion rate is required'),
                           FormBuilderValidators.min(0, errorText: 'Invalid conversion rate'),
                           FormBuilderValidators.numeric(errorText: 'Invalid conversion rate'),
                         ]),
@@ -346,7 +386,7 @@ class TransferFormScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       FormBuilderTextField(
                         name: 'note',
-                        // initialValue: isEditing ? record?.note : '',
+                        initialValue: isEditing ? record?.note : '',
                         style: const TextStyle(color: AppColours.moodyPurple),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.maxLength(
