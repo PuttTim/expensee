@@ -10,7 +10,11 @@ import '../models/transfer_type_enum.dart';
 import '../providers/accounts_provider.dart';
 
 class TransferFormScreen extends StatelessWidget {
-  TransferFormScreen({Key? key}) : super(key: key);
+  TransferFormScreen({Key? key, this.isEditing = false, this.record, this.index}) : super(key: key);
+
+  bool isEditing;
+  TransferRecord? record;
+  int? index;
 
   final _formKey = GlobalKey<FormBuilderState>();
 
