@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         ),
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
-      appBar: AppBar(title: Text('Home'), actions: [
+      appBar: AppBar(title: const Text('Home'), actions: [
         IconButton(
           icon: const Icon(Icons.refresh),
           onPressed: () => Provider.of<AccountsProvider>(context, listen: false).refresh(),
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                     size: 32,
                   ),
                   onPressed: () {
-                    showModalBottomSheet(
+                    showDialog(
                       context: context,
                       builder: (context) {
                         return AccountDialogForm();

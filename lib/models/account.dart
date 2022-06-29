@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'account.g.dart';
+
+@JsonSerializable()
 class Account {
   String name;
   double value;
@@ -10,4 +15,6 @@ class Account {
     required this.primaryCurrency,
     required this.budgetLimit,
   });
+
+  factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 }
