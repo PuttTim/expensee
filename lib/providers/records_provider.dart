@@ -39,7 +39,7 @@ class RecordsProvider with ChangeNotifier {
       fromAmount: 250,
       toAmount: 10,
       type: TransferType.transfer,
-      time: DateTime(2020, 1, 1),
+      time: DateTime.now(),
       conversionRate: 25,
       note: '',
     )

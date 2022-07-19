@@ -8,13 +8,22 @@ import 'package:expensee/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
 
-Future<void> main() async {
+
+void main() async {
   /// Ensures the deviceInfo is ran before initializing the Flutter application.
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Uses the Device Info Plus package to get the device's Android Information.
   AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
 
   runApp(
     /// Multi Provider for the three providers (Currencies, Records and Accounts)

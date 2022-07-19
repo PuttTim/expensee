@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="252" height="302" viewBox="0 0 252 302">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#654ea3"/>
+      <stop offset="1" stop-color="#eaafc8"/>
+    </linearGradient>
+  </defs>
+  <g id="expensee_logo" transform="translate(-71 -71)">
+    <g id="Group_11" data-name="Group 11" transform="translate(81 71)">
+      <g id="attach_money_black_24dp" transform="translate(50.694 47.715)">
+        <path id="Path_72" data-name="Path 72" d="M0,0H87.051V87.051H0Z" fill="none"/>
+        <path id="Path_73" data-name="Path 73" d="M25.724,31.654c-8.234-2.14-10.881-4.353-10.881-7.8,0-3.954,3.663-6.71,9.793-6.71,5.151,0,7.726,1.959,8.669,5.078a3.356,3.356,0,0,0,3.156,2.539h1.088a3.438,3.438,0,0,0,3.264-4.606c-1.523-4.28-5.078-7.835-10.736-9.213v-2.5a5.441,5.441,0,1,0-10.881,0v2.394C12.158,12.358,6.5,16.928,6.5,23.929c0,8.379,6.928,12.55,17.048,14.98,9.068,2.176,10.881,5.368,10.881,8.741,0,2.5-1.777,6.493-9.793,6.493-5.985,0-9.068-2.14-10.265-5.187a3.569,3.569,0,0,0-3.264-2.43H10.091a3.46,3.46,0,0,0-3.228,4.715c2.067,5.042,6.892,8.016,12.332,9.177v2.43a5.441,5.441,0,1,0,10.881,0V60.49c7.073-1.342,12.695-5.441,12.695-12.876,0-10.3-8.814-13.819-17.048-15.959Z" transform="translate(17.076 7.881)" fill="url(#linear-gradient)"/>
+      </g>
+      <g id="search_black_24dp" transform="translate(0 0)">
+        <path id="Path_76" data-name="Path 76" d="M0,0H230.954V230.954H0Z" fill="none"/>
+        <path id="Path_77" data-name="Path 77" d="M123.294,108.86h-7.6l-2.694-2.6A62.554,62.554,0,0,0,127.24,54.874C122.717,28.122,100.391,6.758,73.447,3.487a62.6,62.6,0,0,0-69.96,69.96c3.272,26.945,24.635,49.27,51.387,53.793A62.554,62.554,0,0,0,106.261,113l2.6,2.694v7.6l40.9,40.9A10.139,10.139,0,0,0,164.1,149.854Zm-57.739,0a43.3,43.3,0,1,1,43.3-43.3A43.246,43.246,0,0,1,65.556,108.86Z" transform="translate(25.864 25.864)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+    <text id="Expensee" transform="translate(197 360)" fill="#885b85" font-size="51" font-family="Montserrat-Medium, Montserrat" font-weight="500"><tspan x="-125.205" y="0">Expensee</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "371289855889",
+    "project_id": "expensee-618ba",
+    "storage_bucket": "expensee-618ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371289855889:android:812df864141a41ea51ec30",
+        "android_client_info": {
+          "package_name": "com.example.expensee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371289855889-aito4mrlllmsjrof2a5aoaqthk6q998v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJciSgEO3EMrSsx5Nbjn82RM2g53QEqv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371289855889-aito4mrlllmsjrof2a5aoaqthk6q998v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

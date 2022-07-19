@@ -78,7 +78,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                               color: AppColours.paleMoodyPurple,
                             ),
                           ),
-                          onSelect: (Currency currency) => context.read<CurrenciesProvider>().setPrimary(currency.code),
+                          onSelect: (Currency currency) =>
+                              context.read<CurrenciesProvider>().setPrimary(currency.code),
                         )
                       },
                       child: const Text('Select'),
@@ -91,7 +92,9 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
               /// Get the list of currencies from the Future getCurrencyRate() defined inside
               builder: (context, currenciesProvider, child) => FutureBuilder<CurrencyRates>(
                 future: currenciesProvider.getCurrencyRate(
-                    Provider.of<AccountsProvider>(context, listen: true).currentAccount.primaryCurrency),
+                    Provider.of<AccountsProvider>(context, listen: true)
+                        .currentAccount
+                        .primaryCurrency),
                 builder: (context, snapshot) {
                   debugPrint(snapshot.data?.toString());
                   if (snapshot.connectionState == ConnectionState.done) {
