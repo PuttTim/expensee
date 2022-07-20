@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
-
+import 'screens/login_screen.dart';
 
 void main() async {
   /// Ensures the deviceInfo is ran before initializing the Flutter application.
@@ -24,11 +24,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   runApp(
     /// Multi Provider for the three providers (Currencies, Records and Accounts)
     MultiProvider(
       providers: [
+        StreamProvider<User?>.value(
+          value: FirebaseAuth.instance.authStateChanges(),
+          initialData: null,
+        ),
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
         ChangeNotifierProvider(create: (context) => RecordsProvider()),
         ChangeNotifierProvider(create: (context) => AccountsProvider())
@@ -47,6 +50,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isAuthenticated = Provider.of<User?>(context) != null;
+
+    print(isAuthenticated);
+
     return MaterialApp(
       title: 'Expensee',
       localizationsDelegates: const [FormBuilderLocalizations.delegate],
@@ -84,16 +91,14 @@ class MyApp extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColours.moodyPurple,
-              width: 2,
+              width: 4,
             ),
           ),
         ),
       ),
 
       /// Making sure the user has to tap back twice to exit the application.
-      home: const DoubleBack(
-        child: MainScreen(),
-      ),
+      home: DoubleBack(child: isAuthenticated ? const MainScreen() : LoginScreen()),
     );
   }
 }
