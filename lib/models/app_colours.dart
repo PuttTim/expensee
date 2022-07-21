@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColours {
   static const Color wittyWhite = Color(0xFFFAFAFA);
   static const Color blackestBlack = Color(0xFF000000);
+  static const Color grandestGrey = Color(0xFF707070);
   static const Color moodyPurple = Color(0xFF885B85);
   static const Color forestryGreen = Color(0xFF547155);
   static const Color feistyOrange = Color(0xFFF46A49);
