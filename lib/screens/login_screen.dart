@@ -6,10 +6,17 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../models/app_colours.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormBuilderState>();
+
+  bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +30,8 @@ class LoginScreen extends StatelessWidget {
         };
 
     void authenticateWithGoogle() => {print('Google Authentication')};
+
+    void toggleShowPassword() => {setState(() => showPassword = !showPassword)};
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -64,15 +73,25 @@ class LoginScreen extends StatelessWidget {
                       FormBuilderValidators.required(),
                     ],
                   ),
-                  decoration: const InputDecoration(
+                  obscureText: !showPassword,
+                  decoration: InputDecoration(
                     isDense: true,
-                    icon: Icon(Icons.lock, color: AppColours.grandestGrey),
+                    icon: const Icon(Icons.lock, color: AppColours.grandestGrey),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          toggleShowPassword();
+                        },
+                        // All icon buttons should show what clicking the button will do
+                        // (i.e clicking on an eye open will show the password)
+                        icon: showPassword
+                            ? const Icon(Icons.visibility_off, color: AppColours.grandestGrey)
+                            : const Icon(Icons.remove_red_eye, color: AppColours.grandestGrey)),
                     labelText: 'Password',
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
-                    errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
-                    hintStyle: TextStyle(color: AppColours.grandestGrey),
-                    labelStyle: TextStyle(color: AppColours.grandestGrey),
+                    enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
+                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
+                    errorBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
+                    hintStyle: const TextStyle(color: AppColours.grandestGrey),
+                    labelStyle: const TextStyle(color: AppColours.grandestGrey),
                   ),
                 ),
                 const SizedBox(height: 16),
