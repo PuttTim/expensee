@@ -1,5 +1,6 @@
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
+import 'package:expensee/services/auth_service.dart';
 import 'package:expensee/widgets/account_card.dart';
 import 'package:expensee/widgets/account_dialog_form.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
@@ -15,6 +16,10 @@ import '../providers/accounts_provider.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  void logout() {
+    AuthService().logoutUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +34,13 @@ class HomeScreen extends StatelessWidget {
       ),
       appBar: AppBar(
         title: const Text('Home'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                logout();
+              },
+              icon: const Icon(Icons.exit_to_app))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

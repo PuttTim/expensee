@@ -1,4 +1,5 @@
 import 'package:expensee/models/app_colours.dart';
+import 'package:expensee/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,7 +19,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void registerUser() {
     if (_formKey.currentState!.saveAndValidate()) {
-      print(_formKey.currentState!.value);
+      AuthService()
+          .registerUser(
+        _formKey.currentState!.value['username'] as String,
+        _formKey.currentState!.value['email'] as String,
+        _formKey.currentState!.value['password'] as String,
+      )
+          .then((value) {
+        if (value == 'Success') {
+          Navigator.pop(context);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Error'),
+              content: Text(value),
+              actions: [
+                FlatButton(
+                  child: Text('OK'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          );
+        }
+      });
     }
   }
 

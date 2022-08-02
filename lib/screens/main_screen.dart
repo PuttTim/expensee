@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/app_colours.dart';
@@ -20,6 +21,8 @@ class _MainScreenState extends State<MainScreen> {
   /// The Currency Screen is the screen that shows the list of currencies.
   @override
   Widget build(BuildContext context) {
+    debugPrint('DISPLAYNAME: ${FirebaseAuth.instance.currentUser!.displayName}');
+
     return Scaffold(
       body: screens[currentScreenIndex],
       bottomNavigationBar: NavigationBarTheme(
