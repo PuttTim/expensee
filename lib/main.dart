@@ -29,7 +29,7 @@ void main() async {
     MultiProvider(
       providers: [
         StreamProvider<User?>.value(
-          value: FirebaseAuth.instance.authStateChanges(),
+          value: FirebaseAuth.instance.userChanges(),
           initialData: null,
         ),
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expensee',
       localizationsDelegates: const [FormBuilderLocalizations.delegate],
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Poppins',

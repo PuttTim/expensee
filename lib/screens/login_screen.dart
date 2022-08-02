@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/expensee_logo.svg'),
                 const SizedBox(height: 16),
@@ -60,16 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
+                    focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
                     hintStyle: TextStyle(color: AppColours.grandestGrey),
                     labelStyle: TextStyle(color: AppColours.grandestGrey),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 FormBuilderTextField(
                   name: 'password',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.email(),
                       FormBuilderValidators.required(),
                     ],
                   ),
@@ -90,11 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     errorBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
+                    focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
                     hintStyle: const TextStyle(color: AppColours.grandestGrey),
                     labelStyle: const TextStyle(color: AppColours.grandestGrey),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: ForgotPasswordDialog(),
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(),
+                            builder: (context) => RegisterScreen(),
                           ),
                         );
                       },
