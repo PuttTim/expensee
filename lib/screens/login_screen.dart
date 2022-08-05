@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../models/app_colours.dart';
+import '../models/response.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -18,21 +20,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool showPassword = false;
 
+  void authenticateUser() {
+    if (_loginFormKey.currentState!.saveAndValidate()) {
+      Map<String, dynamic> data = _loginFormKey.currentState!.value;
+      AuthService().loginUser(email: data['email'], password: data['password']).then((res) {
+        if (res.status == Status.success) {
+          debugPrint('success');
+        } else if (res.status == Status.error) {
+          debugPrint(res.message);
+        }
+      });
+      // _formKey.currentState!.value.forEach((key, value) {
+      //   print('${value} ${value.runtimeType}');
+      // });
+    }
+  }
+
+  void authenticateWithGoogle() => {print('Google Authentication')};
+
+  void toggleShowPassword() => {setState(() => showPassword = !showPassword)};
+
   @override
   Widget build(BuildContext context) {
-    void authenticateUser() => {
-          if (_loginFormKey.currentState!.saveAndValidate())
-            {
-              _loginFormKey.currentState!.value.forEach(
-                (key, value) => print('$key: $value'),
-              )
-            }
-        };
-
-    void authenticateWithGoogle() => {print('Google Authentication')};
-
-    void toggleShowPassword() => {setState(() => showPassword = !showPassword)};
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -247,7 +256,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                 TextButton(
                   child: const Text('SUBMIT'),
                   onPressed: () {
-                    print(_forgotPasswordFieldKey.currentState!.value);
+                    debugPrint(_forgotPasswordFieldKey.currentState!.value);
                   },
                 )
               ],

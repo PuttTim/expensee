@@ -5,11 +5,12 @@ import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/providers/currencies_provider.dart';
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'firebase_options.dart';
 import 'screens/login_screen.dart';
 
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isAuthenticated = Provider.of<User?>(context) != null;
 
-    print(isAuthenticated);
+    debugPrint('isAuthenticated: $isAuthenticated');
 
     return MaterialApp(
       title: 'Expensee',
