@@ -1,9 +1,12 @@
 import 'package:expensee/models/app_colours.dart';
-import 'package:expensee/services/auth_service.dart';
+import 'package:expensee/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+
+import '../models/response.dart';
+import '../services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key}) : super(key: key);
@@ -19,31 +22,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void registerUser() {
     if (_formKey.currentState!.saveAndValidate()) {
+      Map<String, dynamic> data = _formKey.currentState!.value;
       AuthService()
-          .registerUser(
-        _formKey.currentState!.value['username'] as String,
-        _formKey.currentState!.value['email'] as String,
-        _formKey.currentState!.value['password'] as String,
-      )
-          .then((value) {
-        if (value == 'Success') {
-          Navigator.pop(context);
-        } else {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Error'),
-              content: Text(value),
-              actions: [
-                FlatButton(
-                  child: Text('OK'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          );
+          .registerUser(username: data['username'], email: data['email'], password: data['password'])
+          .then((res) {
+        if (res.status == Status.success) {
+          debugPrint('success');
+        } else if (res.status == Status.error) {
+          debugPrint(res.message);
         }
       });
+      // _formKey.currentState!.value.forEach((key, value) {
+      //   print('${value} ${value.runtimeType}');
+      // });
     }
   }
 
@@ -164,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       },
