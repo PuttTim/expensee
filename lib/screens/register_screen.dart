@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:expensee/models/app_colours.dart';
 import 'package:expensee/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
           .then((res) {
         if (res.status == Status.success) {
           debugPrint('success');
+
+          AuthService().verifyEmail(email: data['email']);
+
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Row(
+              children: const [
+                Icon(Icons.done, color: AppColours.emeraldGreen),
+                SizedBox(width: 16),
+                Text('Please check your email to verify your account.'),
+              ],
+            ),
+          ));
+
+          FocusScope.of(context).requestFocus(FocusNode());
+
+          Timer(const Duration(seconds: 2), () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          });
         } else if (res.status == Status.error) {
           debugPrint("error msg: ${res.message}");
           switch (res.message) {
@@ -54,6 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ));
+              FocusScope.of(context).requestFocus(FocusNode());
           }
           // _formKey.currentState!.invalidateField(name: 'email', errorText: 'Email already exists');
         }

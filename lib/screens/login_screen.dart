@@ -1,3 +1,4 @@
+import 'package:expensee/screens/main_screen.dart';
 import 'package:expensee/screens/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,15 +27,25 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<String, dynamic> data = _loginFormKey.currentState!.value;
       AuthService().loginUser(email: data['email'], password: data['password']).then((res) {
         if (res.status == Status.success) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.done, color: AppColours.emeraldGreen),
-                const SizedBox(width: 16),
-                Text('Welcome back, ${FirebaseAuth.instance.currentUser!.displayName}!'),
-              ],
-            ),
-          ));
+          if (FirebaseAuth.instance.currentUser!.emailVerified) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MainScreen(),
+              ),
+              (Route<dynamic> route) => false,
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Row(
+                children: const [
+                  Icon(Icons.error, color: AppColours.grandestGrey),
+                  SizedBox(width: 16),
+                  Text('Please verify your email address.'),
+                ],
+              ),
+            ));
+            FocusScope.of(context).requestFocus(FocusNode());
+          }
         } else if (res.status == Status.error) {
           switch (res.message) {
             case 'invalid-email':
@@ -54,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ));
+              FocusScope.of(context).requestFocus(FocusNode());
               break;
             default:
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -65,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ));
+              FocusScope.of(context).requestFocus(FocusNode());
           }
           debugPrint(res.message);
         }
@@ -134,7 +147,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                     errorBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
-                    focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
+                    focusedErrorBorder:
+                        const UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
                     hintStyle: const TextStyle(color: AppColours.grandestGrey),
                     labelStyle: const TextStyle(color: AppColours.grandestGrey),
                   ),
@@ -279,6 +293,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                   ],
                 ),
               ));
+              FocusScope.of(context).requestFocus(FocusNode());
             } else if (res.status == Status.error) {
               if (res.message == 'user-not-found') {
                 _forgotPasswordFieldKey.currentState!.invalidate('Email address not found');

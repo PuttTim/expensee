@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
 import 'package:expensee/services/auth_service.dart';
@@ -12,12 +14,15 @@ import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../models/transfer_record.dart';
 import '../providers/accounts_provider.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   void logout() {
-    AuthService().logoutUser();
+    Timer(Duration(milliseconds: 500), () {
+      AuthService().logoutUser();
+    });
   }
 
   @override
@@ -37,6 +42,12 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
                 logout();
               },
               icon: const Icon(Icons.exit_to_app))

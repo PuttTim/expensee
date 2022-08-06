@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isAuthenticated = Provider.of<User?>(context) != null;
+    User? user = Provider.of<User?>(context);
+    bool isAuthenticated = user != null && user.emailVerified;
 
     debugPrint('isAuthenticated: $isAuthenticated');
 
