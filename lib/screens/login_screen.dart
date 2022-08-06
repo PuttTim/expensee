@@ -57,8 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   name: 'email',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.email(),
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.email(errorText: 'Invalid email address'),
+                      FormBuilderValidators.required(errorText: 'Email address is required'),
                     ],
                   ),
                   decoration: const InputDecoration(
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   name: 'password',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.required(errorText: 'Password is required'),
                     ],
                   ),
                   obscureText: !showPassword,

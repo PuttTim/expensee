@@ -29,7 +29,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (res.status == Status.success) {
           debugPrint('success');
         } else if (res.status == Status.error) {
-          debugPrint(res.message);
+          debugPrint("error msg: ${res.message}");
+          switch (res.message) {
+            case 'email-already-in-use':
+              _formKey.currentState!.invalidateField(name: 'email', errorText: 'Email already in use');
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Invalid email'),
+              ));
+              break;
+            case 'invalid-email':
+              _formKey.currentState!.invalidateField(name: 'email', errorText: 'Invalid email');
+              break;
+            case 'weak-password':
+              _formKey.currentState!.invalidateField(name: 'password', errorText: 'Password is too weak');
+              break;
+            default:
+              debugPrint('Unknown error');
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Row(
+                  children: const [
+                    Icon(Icons.error, color: AppColours.feistyOrange),
+                    SizedBox(width: 16),
+                    Text('Something went wrong, please try again.'),
+                  ],
+                ),
+              ));
+          }
+          // _formKey.currentState!.invalidateField(name: 'email', errorText: 'Email already exists');
         }
       });
       // _formKey.currentState!.value.forEach((key, value) {
@@ -57,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   name: 'username',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.required(errorText: 'Username is required'),
                     ],
                   ),
                   decoration: const InputDecoration(
@@ -77,8 +103,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   name: 'email',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.email(),
+                      FormBuilderValidators.required(errorText: 'Email address is required'),
+                      FormBuilderValidators.email(errorText: 'Invalid email address'),
                     ],
                   ),
                   decoration: const InputDecoration(
@@ -98,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   name: 'password',
                   validator: FormBuilderValidators.compose(
                     [
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.required(errorText: 'Password is required'),
                     ],
                   ),
                   obscureText: !showPassword,
