@@ -29,11 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
         if (res.status == Status.success) {
           if (FirebaseAuth.instance.currentUser!.emailVerified) {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ),
-              (Route<dynamic> route) => false,
-            );
+                MaterialPageRoute(
+                  builder: (context) => MainScreen(),
+                ),
+                (Route<dynamic> route) => false);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Row(
@@ -85,7 +84,19 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void authenticateWithGoogle() => {print('Google Authentication')};
+  void authenticateWithGoogle() => {
+        AuthService().loginUserWithGoogle().then((res) => {
+              if (res.status == Status.success)
+                {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => MainScreen(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  )
+                }
+            })
+      };
 
   void toggleShowPassword() => {setState(() => showPassword = !showPassword)};
 

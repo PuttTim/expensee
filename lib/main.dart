@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
     bool isAuthenticated = user != null && user.emailVerified;
-
     debugPrint('isAuthenticated: $isAuthenticated');
 
     return MaterialApp(

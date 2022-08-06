@@ -1,6 +1,7 @@
 import 'package:expensee/models/response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   Future<Response> registerUser({required String username, required String email, required String password}) async {
@@ -25,8 +26,10 @@ class AuthService {
     }
   }
 
-  Future<void> logoutUser() {
-    return FirebaseAuth.instance.signOut();
+  Future<void> logoutUser() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    await FirebaseAuth.instance.signOut();
+    await googleSignIn.signOut();
   }
 
   Future<Response> loginUser({required String email, required String password}) async {
@@ -45,6 +48,23 @@ class AuthService {
   Future<Response> resetPassword({required String email}) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return Response(status: Status.success);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('error: ${e.code}');
+      return Response(status: Status.error, message: e.code);
+    }
+  }
+
+  Future<Response> loginUserWithGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
+    AuthCredential authCredential = GoogleAuthProvider.credential(
+      idToken: googleSignInAuthentication.idToken,
+      accessToken: googleSignInAuthentication.accessToken,
+    );
+    try {
+      await FirebaseAuth.instance.signInWithCredential(authCredential);
       return Response(status: Status.success);
     } on FirebaseAuthException catch (e) {
       debugPrint('error: ${e.code}');
