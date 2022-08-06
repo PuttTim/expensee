@@ -1,4 +1,5 @@
 import 'package:expensee/screens/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,14 +26,49 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<String, dynamic> data = _loginFormKey.currentState!.value;
       AuthService().loginUser(email: data['email'], password: data['password']).then((res) {
         if (res.status == Status.success) {
-          debugPrint('success');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.done, color: AppColours.emeraldGreen),
+                const SizedBox(width: 16),
+                Text('Welcome back, ${FirebaseAuth.instance.currentUser!.displayName}!'),
+              ],
+            ),
+          ));
         } else if (res.status == Status.error) {
+          switch (res.message) {
+            case 'invalid-email':
+              _loginFormKey.currentState!.invalidateField(name: 'email', errorText: 'Invalid email address');
+              break;
+            case 'wrong-password':
+            case 'user-not-found':
+              _loginFormKey.currentState!.invalidateField(name: 'password', errorText: 'Wrong username or password');
+              break;
+            case 'user-disabled':
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Row(
+                  children: const [
+                    Icon(Icons.error, color: AppColours.feistyOrange),
+                    SizedBox(width: 16),
+                    Text('Your account has been disabled.'),
+                  ],
+                ),
+              ));
+              break;
+            default:
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Row(
+                  children: const [
+                    Icon(Icons.error, color: AppColours.feistyOrange),
+                    SizedBox(width: 16),
+                    Text('Something went wrong, please try again.'),
+                  ],
+                ),
+              ));
+          }
           debugPrint(res.message);
         }
       });
-      // _formKey.currentState!.value.forEach((key, value) {
-      //   print('${value} ${value.runtimeType}');
-      // });
     }
   }
 
@@ -226,6 +262,35 @@ class ForgotPasswordDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void resetPassword() {
+      if (_forgotPasswordFieldKey.currentState!.validate()) {
+        debugPrint('Password reset email: ${_forgotPasswordFieldKey.currentState!.value}');
+        AuthService().resetPassword(email: _forgotPasswordFieldKey.currentState!.value).then(
+          (res) {
+            if (res.status == Status.success) {
+              debugPrint('Password reset email sent');
+              Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Row(
+                  children: const [
+                    Icon(Icons.done, color: AppColours.emeraldGreen),
+                    SizedBox(width: 16),
+                    Text('Password reset sent, check your email'),
+                  ],
+                ),
+              ));
+            } else if (res.status == Status.error) {
+              if (res.message == 'user-not-found') {
+                _forgotPasswordFieldKey.currentState!.invalidate('Email address not found');
+              } else {
+                _forgotPasswordFieldKey.currentState!.invalidate('Something went wrong, please try again');
+              }
+            }
+          },
+        );
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.only(left: 32),
       child: InkWell(
@@ -237,14 +302,23 @@ class ForgotPasswordDialog extends StatelessWidget {
               content: SingleChildScrollView(
                 child: Column(
                   children: [
+                    Text("We'll send a password reset email to your account."),
                     FormBuilderTextField(
                       name: 'forgotPasswordEmail',
                       key: _forgotPasswordFieldKey,
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(errorText: 'Email address is required'),
+                          FormBuilderValidators.email(errorText: 'Email address is invalid'),
+                        ],
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.grandestGrey)),
                         errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
+                        focusedErrorBorder:
+                            UnderlineInputBorder(borderSide: BorderSide(color: AppColours.feistyOrange)),
                         hintStyle: TextStyle(color: AppColours.grandestGrey),
                         labelStyle: TextStyle(color: AppColours.grandestGrey),
                       ),
@@ -256,7 +330,7 @@ class ForgotPasswordDialog extends StatelessWidget {
                 TextButton(
                   child: const Text('SUBMIT'),
                   onPressed: () {
-                    debugPrint(_forgotPasswordFieldKey.currentState!.value);
+                    resetPassword();
                   },
                 )
               ],
