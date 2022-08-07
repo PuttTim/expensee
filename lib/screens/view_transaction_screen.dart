@@ -167,7 +167,7 @@ class ViewTransactionScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
 
                 /// Ternary to ensure there is a Note before displaying the title.
-                child: Text(record.note!.isNotEmpty ? "Note" : "", style: titleStyle),
+                child: Text(record.note != null ? "Note" : "", style: titleStyle),
               ),
               const SizedBox(height: 8),
               Container(

@@ -19,6 +19,7 @@ class RecordsProvider with ChangeNotifier {
       category: Category.food,
       time: DateTime.parse('2022-05-09 23:55'),
       note: 'Dinner!',
+      recordType: 'transaction',
     ),
     TransactionRecord(
       isPositive: false,
@@ -30,6 +31,7 @@ class RecordsProvider with ChangeNotifier {
       category: Category.shopping,
       time: DateTime.parse('2022-05-09 23:55'),
       note: 'UT T-Shirt!',
+      recordType: 'transaction',
     ),
     TransferRecord(
       fromAccountId: '3',
@@ -42,6 +44,7 @@ class RecordsProvider with ChangeNotifier {
       time: DateTime.now(),
       conversionRate: 25,
       note: '',
+      recordType: 'transfer',
     )
   ];
 

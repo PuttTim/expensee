@@ -15,8 +15,9 @@ TransferRecord _$TransferRecordFromJson(Map<String, dynamic> json) =>
       fromAmount: (json['fromAmount'] as num).toDouble(),
       toAmount: (json['toAmount'] as num).toDouble(),
       type: $enumDecode(_$TransferTypeEnumMap, json['type']),
-      time: DateTime.parse(json['time'] as String),
+      time: TransferRecord.dateTimeFromTimestamp(json['time'] as Timestamp),
       conversionRate: (json['conversionRate'] as num).toDouble(),
+      recordType: json['recordType'] as String,
       note: json['note'] as String?,
     );
 
@@ -29,8 +30,9 @@ Map<String, dynamic> _$TransferRecordToJson(TransferRecord instance) =>
       'fromAmount': instance.fromAmount,
       'toAmount': instance.toAmount,
       'type': _$TransferTypeEnumMap[instance.type],
-      'time': instance.time.toIso8601String(),
+      'time': TransferRecord.dateTimeToTimestamp(instance.time),
       'conversionRate': instance.conversionRate,
+      'recordType': instance.recordType,
       'note': instance.note,
     };
 
