@@ -14,6 +14,7 @@ import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../models/transfer_record.dart';
 import '../providers/accounts_provider.dart';
+import '../providers/navigation_provider.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -141,6 +142,17 @@ class HomeScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<NavigationProvider>(context, listen: false).setCurrentScreenIndex(1);
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                primary: AppColours.moodyPurple,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('View All Records', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

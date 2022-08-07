@@ -1,5 +1,8 @@
+import 'package:expensee/providers/navigation_provider.dart';
+import 'package:expensee/screens/all_records_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/app_colours.dart';
 import 'currency_screen.dart';
@@ -13,8 +16,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int currentScreenIndex = 0;
-  List<Widget> screens = const [HomeScreen(), CurrencyScreen()];
+  List<Widget> screens = const [HomeScreen(), AllRecordsScreen(), CurrencyScreen()];
 
   /// This screen holds the two main screens; Home and Currency Screens.
   /// The Home Screen is the default screen.
@@ -22,6 +24,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     debugPrint('DISPLAYNAME: ${FirebaseAuth.instance.currentUser!.displayName}');
+
+    int currentScreenIndex = Provider.of<NavigationProvider>(context, listen: true).currentScreenIndex;
 
     return Scaffold(
       body: screens[currentScreenIndex],
@@ -44,15 +48,18 @@ class _MainScreenState extends State<MainScreen> {
           animationDuration: const Duration(milliseconds: 1000),
           selectedIndex: currentScreenIndex,
           onDestinationSelected: (int newIndex) {
-            setState(() {
-              currentScreenIndex = newIndex;
-            });
+            Provider.of<NavigationProvider>(context, listen: false).setCurrentScreenIndex(newIndex);
           },
           destinations: const [
             NavigationDestination(
               selectedIcon: Icon(Icons.home),
               icon: Icon(Icons.home_outlined),
               label: 'Home',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.receipt),
+              icon: Icon(Icons.receipt_outlined),
+              label: 'Records',
             ),
             NavigationDestination(
               selectedIcon: Icon(Icons.currency_exchange),

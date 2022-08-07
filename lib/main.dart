@@ -3,6 +3,7 @@ import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:expensee/models/app_colours.dart';
 import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/providers/currencies_provider.dart';
+import 'package:expensee/providers/navigation_provider.dart';
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +36,8 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
         ChangeNotifierProvider(create: (context) => RecordsProvider()),
-        ChangeNotifierProvider(create: (context) => AccountsProvider())
+        ChangeNotifierProvider(create: (context) => AccountsProvider()),
+        ChangeNotifierProvider(create: (context) => NavigationProvider()),
       ],
 
       /// Passes the Device's Android SDK version as a parameter to the application.

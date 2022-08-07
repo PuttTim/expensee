@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'account.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Account {
   String id;
   String name;
@@ -18,6 +19,9 @@ class Account {
     required this.budgetLimit,
   });
 
+  factory Account.fromFiresstore(DocumentSnapshot doc) => Account.fromJson(doc.data()! as Map<String, dynamic>);
   // JsonSerializable auto generated fromJson method.
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
+  // JsonSerializable auto generated toJson method.
+  Map<String, dynamic> toJson() => _$AccountToJson(this);
 }
