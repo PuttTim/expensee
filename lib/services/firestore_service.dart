@@ -36,6 +36,19 @@ class FirestoreService {
     }
   }
 
+  Future<void> updateRecord(dynamic record) async {
+    // debugPrint(record.docId);
+    if (record.runtimeType == TransactionRecord) {
+      await db
+          .collection('records')
+          .doc(record.docId)
+          .update(record.toJson())
+          .onError((error, stackTrace) => debugPrint('error: $error, stackTrace: $stackTrace'));
+    } else if (record.runtimeType == TransferRecord) {
+      await db.collection('records').doc(record.docId).update(record.toJson());
+    }
+  }
+
   Stream<List<Account>> fetchAccountsStream() {
     Stream<List<Account>> list = db.collection('accounts').snapshots().map((snapshot) => snapshot.docs.map((doc) {
           return Account.fromFirestore(doc);

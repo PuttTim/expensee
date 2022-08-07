@@ -103,10 +103,7 @@ class TransactionFormScreen extends StatelessWidget {
                     TextButton(
                       child: const Text('SAVE'),
                       onPressed: () {
-                        Provider.of<RecordsProvider>(context, listen: false).updateRecord(
-                          index: index!,
-                          record: TransactionRecord.fromJson(data),
-                        );
+                        FirestoreService().updateRecord(TransactionRecord.fromJson({...data, 'docId': record!.docId}));
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
