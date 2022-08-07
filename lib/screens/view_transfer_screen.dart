@@ -1,11 +1,11 @@
-import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/screens/transfer_form_screen.dart';
 import 'package:expensee/utilities/capitaliseString.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/app_colours.dart';
 import '../models/transfer_record.dart';
+import '../services/firestore_service.dart';
 import '../utilities/datetime_to_displayed_time.dart';
 
 class ViewTransferScreen extends StatelessWidget {
@@ -61,18 +61,46 @@ class ViewTransferScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.fromAccountId).name,
-                    style: subtitleStyle,
+                  StreamBuilder(
+                    stream: FirestoreService().getAccountById(record.fromAccountId),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("Loading");
+                      }
+
+                      Account? account = snapshot.data;
+                      return Text(
+                        account!.name,
+                        style: subtitleStyle,
+                      );
+                    },
                   ),
                   const Icon(
                     Icons.east,
                     color: AppColours.forestryGreen,
                     size: 24,
                   ),
-                  Text(
-                    Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.toAccountId).name,
-                    style: subtitleStyle,
+                  StreamBuilder(
+                    stream: FirestoreService().getAccountById(record.toAccountId),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("Loading");
+                      }
+
+                      Account? account = snapshot.data;
+                      return Text(
+                        account!.name,
+                        style: subtitleStyle,
+                      );
+                    },
                   ),
                 ],
               ),

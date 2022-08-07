@@ -1,9 +1,9 @@
 import 'package:expensee/models/app_colours.dart';
-import 'package:expensee/providers/accounts_provider.dart';
 import 'package:expensee/screens/view_transfer_screen.dart';
+import 'package:expensee/services/firestore_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/transfer_record.dart';
 import '../utilities/datetime_to_displayed_time.dart';
 
@@ -45,15 +45,30 @@ class TransferRecordCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.fromAccountId).name,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                              color: AppColours.transferTeal, fontSize: 24, fontWeight: FontWeight.w600),
-                        ),
+                      StreamBuilder(
+                        stream: FirestoreService().getAccountById(record.fromAccountId),
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('');
+                          }
+
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Text("Loading");
+                          }
+
+                          Account? account = snapshot.data;
+                          return FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              account?.name ?? '',
+                              style: const TextStyle(
+                                color: AppColours.transferTeal,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
@@ -87,15 +102,30 @@ class TransferRecordCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.toAccountId).name,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
-                          style: const TextStyle(
-                              color: AppColours.transferTeal, fontSize: 24, fontWeight: FontWeight.w600),
-                        ),
+                      StreamBuilder(
+                        stream: FirestoreService().getAccountById(record.toAccountId),
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('');
+                          }
+
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Text("Loading");
+                          }
+
+                          Account? account = snapshot.data;
+                          return FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              account?.name ?? '',
+                              style: const TextStyle(
+                                color: AppColours.transferTeal,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       FittedBox(
                         fit: BoxFit.scaleDown,

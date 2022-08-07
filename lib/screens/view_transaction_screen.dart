@@ -1,12 +1,12 @@
 import 'package:expensee/models/transaction_record.dart';
 import 'package:expensee/screens/transaction_form_screen.dart';
+import 'package:expensee/services/firestore_service.dart';
 import 'package:expensee/utilities/capitaliseString.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/app_colours.dart';
 import '../models/category.dart';
-import '../providers/accounts_provider.dart';
 import '../utilities/datetime_to_displayed_time.dart';
 
 class ViewTransactionScreen extends StatelessWidget {
@@ -98,9 +98,23 @@ class ViewTransactionScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  Provider.of<AccountsProvider>(context, listen: false).fetchAccount(record.accountId).name,
-                  style: subtitleStyle,
+                child: StreamBuilder(
+                  stream: FirestoreService().getAccountById(record.accountId),
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Loading");
+                    }
+
+                    Account? account = snapshot.data;
+                    return Text(
+                      account!.name,
+                      style: subtitleStyle,
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 16),

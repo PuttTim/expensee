@@ -36,6 +36,14 @@ class FirestoreService {
     return list;
   }
 
+  Stream<Account> getAccountById(String docId) {
+    Stream<Account> stream = db.collection('accounts').doc(docId).get().then((doc) {
+      return Account.fromFirestore(doc);
+    }).asStream();
+    // debugPrint('stream: ${stream.toString()}');
+    return stream;
+  }
+
   Future<void> addAccount(Account account) {
     return db.collection('accounts').add(account.toJson());
   }
