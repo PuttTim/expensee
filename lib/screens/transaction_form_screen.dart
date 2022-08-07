@@ -104,7 +104,9 @@ class TransactionFormScreen extends StatelessWidget {
                       child: const Text('SAVE'),
                       onPressed: () {
                         FirestoreService().updateRecord(TransactionRecord.fromJson({...data, 'docId': record!.docId}));
-                        FirestoreService().modifyAccountValue(data['accountId'], data['amount']);
+                        FirestoreService()
+                            .modifyAccountValueByRecordUpdate(record!.accountId, record!.amount, data['amount']);
+                        // FirestoreService().modifyAccountValue(data['accountId'], data['amount']);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

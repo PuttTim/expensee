@@ -24,6 +24,7 @@ class AllRecordsScreen extends StatelessWidget {
                 List<dynamic>? records = snapshot.data;
 
                 if (snapshot.hasError) {
+                  debugPrint('Error: ${snapshot.error}');
                   return const Text('Something went wrong, please connect to the internet');
                 }
 

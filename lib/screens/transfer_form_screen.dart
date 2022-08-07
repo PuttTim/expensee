@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expensee/models/app_colours.dart';
-import 'package:expensee/providers/records_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -48,7 +47,9 @@ class TransferFormScreen extends StatelessWidget {
                         TextButton(
                           child: const Text('DELETE'),
                           onPressed: () {
-                            Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
+                            FirestoreService().deleteRecord(record);
+                            FirestoreService().reverseValueTransfer(
+                                record!.fromAccountId, record!.toAccountId, record!.fromAmount, record!.toAmount);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -91,6 +92,7 @@ class TransferFormScreen extends StatelessWidget {
                       _formKey.currentState!.value['conversionRate'] == ''
                   ? conversionRate
                   : double.parse(_formKey.currentState!.value['conversionRate']),
+              'recordType': 'transfer',
             };
 
             /// If the user is editing, then the record is updated,
@@ -111,10 +113,9 @@ class TransferFormScreen extends StatelessWidget {
                     TextButton(
                       child: const Text('SAVE'),
                       onPressed: () {
-                        Provider.of<RecordsProvider>(context, listen: false).updateRecord(
-                          index: index!,
-                          record: TransferRecord.fromJson(data),
-                        );
+                        FirestoreService().updateRecord(TransferRecord.fromJson({...data, 'docId': record!.docId}));
+                        FirestoreService().accountValueTransfer(
+                            data['fromAccountId'], data['toAccountId'], data['fromAmount'], data['toAmount']);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -128,7 +129,9 @@ class TransferFormScreen extends StatelessWidget {
                 ),
               );
             } else {
-              Provider.of<RecordsProvider>(context, listen: false).insertRecord(TransferRecord.fromJson(data));
+              FirestoreService().insertRecord(TransferRecord.fromJson(data));
+              FirestoreService().accountValueTransfer(
+                  data['fromAccountId'], data['toAccountId'], data['fromAmount'], data['toAmount']);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
