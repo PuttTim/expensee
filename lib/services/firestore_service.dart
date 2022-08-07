@@ -49,6 +49,14 @@ class FirestoreService {
     }
   }
 
+  Future<void> deleteRecord(dynamic record) async {
+    if (record.runtimeType == TransactionRecord) {
+      await db.collection('records').doc(record.docId).delete();
+    } else if (record.runtimeType == TransferRecord) {
+      await db.collection('records').doc(record.docId).delete();
+    }
+  }
+
   Stream<List<Account>> fetchAccountsStream() {
     Stream<List<Account>> list = db.collection('accounts').snapshots().map((snapshot) => snapshot.docs.map((doc) {
           return Account.fromFirestore(doc);

@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../models/account.dart';
 import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
-import '../providers/records_provider.dart';
 import '../utilities/countrycode_to_emoji.dart';
 import 'main_screen.dart';
 
@@ -51,7 +50,7 @@ class TransactionFormScreen extends StatelessWidget {
                         TextButton(
                           child: const Text('DELETE'),
                           onPressed: () {
-                            Provider.of<RecordsProvider>(context, listen: false).deleteRecord(index: index!);
+                            FirestoreService().deleteRecord(record);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
