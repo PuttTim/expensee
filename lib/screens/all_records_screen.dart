@@ -51,32 +51,35 @@ class AllRecordsScreen extends StatelessWidget {
                 //   debugPrint(element.toString());
                 // });
 
-                return ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: records!.length,
-                  itemBuilder: (context, index) {
-                    /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
-                    /// and then returns the appropriate widget for that record type.
-                    if (records[index].runtimeType == TransactionRecord) {
-                      return TransactionRecordCard(
-                        record: records[index],
-                        index: index,
+                return records!.isEmpty
+                    ? const Text('Create a record first.',
+                        style: TextStyle(color: AppColours.forestryGreen, fontSize: 16, fontWeight: FontWeight.w500))
+                    : ListView.separated(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: records.length,
+                        itemBuilder: (context, index) {
+                          /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
+                          /// and then returns the appropriate widget for that record type.
+                          if (records[index].runtimeType == TransactionRecord) {
+                            return TransactionRecordCard(
+                              record: records[index],
+                              index: index,
+                            );
+                          } else if (records[index].runtimeType == TransferRecord) {
+                            return TransferRecordCard(
+                              record: records[index],
+                              index: index,
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                        separatorBuilder: (context, index) => const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2),
+                        ),
                       );
-                    } else if (records[index].runtimeType == TransferRecord) {
-                      return TransferRecordCard(
-                        record: records[index],
-                        index: index,
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                  separatorBuilder: (context, index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
-                  ),
-                );
               },
             ),
           ],

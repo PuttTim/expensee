@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:expensee/models/account.dart';
 import 'package:expensee/screens/new_record_screen.dart';
+import 'package:expensee/screens/profile_screen.dart';
 import 'package:expensee/services/auth_service.dart';
 import 'package:expensee/services/firestore_service.dart';
 import 'package:expensee/widgets/account_card.dart';
 import 'package:expensee/widgets/account_dialog_form.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
 import 'package:expensee/widgets/transfer_record_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +17,6 @@ import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../models/transfer_record.dart';
 import '../providers/navigation_provider.dart';
-import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,19 +40,16 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add, color: AppColours.wittyWhite),
       ),
       appBar: AppBar(
-        title: const Text('Home'),
+        title: Text('Hi, ${FirebaseAuth.instance.currentUser?.displayName}!'),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                  (Route<dynamic> route) => false,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
                 );
-                logout();
               },
-              icon: const Icon(Icons.exit_to_app))
+              icon: const Icon(Icons.account_circle))
         ],
       ),
       body: SingleChildScrollView(
@@ -106,16 +104,20 @@ class HomeScreen extends StatelessWidget {
                         debugPrint(element.toString());
                       });
 
-                      return ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: accounts.length,
-                        itemBuilder: (context, index) {
-                          return AccountCard(
-                            account: accounts[index],
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-                      );
+                      return accounts.length == 0
+                          ? const Text('Create an account first.',
+                              style:
+                                  TextStyle(color: AppColours.forestryGreen, fontSize: 16, fontWeight: FontWeight.w500))
+                          : ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: accounts.length,
+                              itemBuilder: (context, index) {
+                                return AccountCard(
+                                  account: accounts[index],
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                            );
                     }),
               ),
             ),
@@ -150,31 +152,34 @@ class HomeScreen extends StatelessWidget {
                 //   debugPrint(element.toString());
                 // });
 
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
-                    /// and then returns the appropriate widget for that record type.
-                    if (records![index].runtimeType == TransactionRecord) {
-                      return TransactionRecordCard(
-                        record: records[index],
-                        index: index,
+                return records!.isEmpty
+                    ? const Text('Create a record first.',
+                        style: TextStyle(color: AppColours.forestryGreen, fontSize: 16, fontWeight: FontWeight.w500))
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: records.length,
+                        itemBuilder: (context, index) {
+                          /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
+                          /// and then returns the appropriate widget for that record type.
+                          if (records[index].runtimeType == TransactionRecord) {
+                            return TransactionRecordCard(
+                              record: records[index],
+                              index: index,
+                            );
+                          } else if (records[index].runtimeType == TransferRecord) {
+                            return TransferRecordCard(
+                              record: records[index],
+                              index: index,
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                        separatorBuilder: (context, index) => const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2),
+                        ),
                       );
-                    } else if (records[index].runtimeType == TransferRecord) {
-                      return TransferRecordCard(
-                        record: records[index],
-                        index: index,
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                  separatorBuilder: (context, index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
-                  ),
-                );
               },
             ),
             TextButton(
