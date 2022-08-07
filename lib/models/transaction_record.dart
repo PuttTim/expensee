@@ -43,7 +43,7 @@ class TransactionRecord {
   });
 
   factory TransactionRecord.fromFirestore(DocumentSnapshot doc) =>
-      TransactionRecord.fromJson(doc.data()! as Map<String, dynamic>);
+      TransactionRecord.fromJson(doc.data()! as Map<String, dynamic>)..docId = doc.id;
   // JsonSerializable auto generated fromJson method.
   factory TransactionRecord.fromJson(Map<String, dynamic> json) => _$TransactionRecordFromJson(json);
   Map<String, dynamic> toJson() => _$TransactionRecordToJson(this);

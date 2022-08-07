@@ -44,7 +44,7 @@ class TransferRecord {
   });
 
   factory TransferRecord.fromFirestore(DocumentSnapshot doc) =>
-      TransferRecord.fromJson(doc.data()! as Map<String, dynamic>);
+      TransferRecord.fromJson(doc.data()! as Map<String, dynamic>)..docId = doc.id;
   // JsonSerializable auto generated fromJson method.
   factory TransferRecord.fromJson(Map<String, dynamic> json) => _$TransferRecordFromJson(json);
   Map<String, dynamic> toJson() => _$TransferRecordToJson(this);

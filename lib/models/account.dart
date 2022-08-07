@@ -5,21 +5,24 @@ part 'account.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Account {
-  String id;
+  String? id;
   String name;
   double value;
   String primaryCurrency;
   double budgetLimit;
+  bool isCurrentAccount;
 
   Account({
-    required this.id,
+    this.id,
     required this.name,
     required this.value,
     required this.primaryCurrency,
     required this.budgetLimit,
+    required this.isCurrentAccount,
   });
 
-  factory Account.fromFirestore(DocumentSnapshot doc) => Account.fromJson(doc.data()! as Map<String, dynamic>);
+  factory Account.fromFirestore(DocumentSnapshot doc) =>
+      Account.fromJson(doc.data()! as Map<String, dynamic>)..id = doc.id;
   // JsonSerializable auto generated fromJson method.
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
   // JsonSerializable auto generated toJson method.

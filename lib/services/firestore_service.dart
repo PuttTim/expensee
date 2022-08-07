@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expensee/models/account.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,12 +24,30 @@ class FirestoreService {
             }
           }
         }).toList());
-    // list.forEach((element) {
-    //   debugPrint('hello');
-    //   debugPrint(element);
-    // });
-    // debugPrint(list);
 
     return list;
+  }
+
+  Stream<List<Account>> fetchAccountsStream() {
+    Stream<List<Account>> list = db.collection('accounts').snapshots().map((snapshot) => snapshot.docs.map((doc) {
+          return Account.fromFirestore(doc);
+        }).toList());
+
+    return list;
+  }
+
+  Future<void> addAccount(Account account) {
+    return db.collection('accounts').add(account.toJson());
+  }
+
+  Future<void> updateCurrentAccount(Account account) async {
+    db.collection('accounts').where('isCurrentAccount', isEqualTo: true).get().then((QuerySnapshot snapshot) {
+      return db.collection('accounts').doc(snapshot.docs.first.id).update({'isCurrentAccount': false});
+    });
+
+    Timer(const Duration(milliseconds: 250), () {
+      db.collection('accounts').doc(account.id).update({'isCurrentAccount': true});
+    });
+    // db.collection('accounts').doc(account.id).update({'isCurrentAccount': true});
   }
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:expensee/models/account.dart';
 import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
 import 'package:expensee/services/auth_service.dart';
+import 'package:expensee/services/firestore_service.dart';
 import 'package:expensee/widgets/account_card.dart';
 import 'package:expensee/widgets/account_dialog_form.dart';
 import 'package:expensee/widgets/transaction_record_card.dart';
@@ -89,14 +91,35 @@ class HomeScreen extends StatelessWidget {
               child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {
                 return SizedBox(
                   height: 80,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: accountsProvider.accounts.length,
-                    separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-                    itemBuilder: (BuildContext context, int index) => AccountCard(
-                      account: accountsProvider.accounts[index],
-                    ),
-                  ),
+                  child: StreamBuilder(
+                      stream: FirestoreService().fetchAccountsStream(),
+                      builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                        List<Account>? accounts = snapshot.data;
+
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong, please connect to the internet');
+                        }
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text("Loading");
+                        }
+
+                        debugPrint('length: ${accounts!.length.toString()}');
+                        accounts.forEach((element) {
+                          debugPrint('hello');
+                          debugPrint(element.toString());
+                        });
+
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: accounts.length,
+                          itemBuilder: (context, index) {
+                            return AccountCard(
+                              account: accounts[index],
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                        );
+                      }),
                 );
               }),
             ),

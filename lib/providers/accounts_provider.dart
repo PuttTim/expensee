@@ -11,6 +11,7 @@ class AccountsProvider with ChangeNotifier {
       primaryCurrency: 'SGD',
       value: 2500.0,
       budgetLimit: 0.0,
+      isCurrentAccount: true,
     ),
     Account(
       id: '2',
@@ -18,6 +19,7 @@ class AccountsProvider with ChangeNotifier {
       primaryCurrency: 'SGD',
       value: 250.0,
       budgetLimit: 0.0,
+      isCurrentAccount: false,
     ),
     Account(
       id: '3',
@@ -25,6 +27,7 @@ class AccountsProvider with ChangeNotifier {
       primaryCurrency: 'THB',
       value: 2500.0,
       budgetLimit: 0.0,
+      isCurrentAccount: false,
     ),
   ];
 

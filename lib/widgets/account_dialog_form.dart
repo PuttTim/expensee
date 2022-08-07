@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:provider/provider.dart';
 
 import '../models/account.dart';
 import '../models/app_colours.dart';
-import '../providers/accounts_provider.dart';
+import '../services/firestore_service.dart';
 import '../utilities/countrycode_to_emoji.dart';
 
 class AccountDialogForm extends StatelessWidget {
@@ -35,12 +34,9 @@ class AccountDialogForm extends StatelessWidget {
               /// TODO: Update to Firestore's id system
               Map<String, dynamic> data = {
                 ..._formKey.currentState!.value,
-                'id': (Provider.of<AccountsProvider>(context, listen: false).accounts.length + 1).toString(),
               };
 
-              Provider.of<AccountsProvider>(context, listen: false).addAccount(
-                Account.fromJson(data),
-              );
+              FirestoreService().addAccount(Account.fromJson(data));
               Navigator.pop(context);
             }
           },
