@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../models/transfer_record.dart';
-import '../providers/accounts_provider.dart';
 import '../providers/navigation_provider.dart';
 import 'login_screen.dart';
 
@@ -88,40 +87,38 @@ class HomeScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Consumer<AccountsProvider>(builder: (context, accountsProvider, _) {
-                return SizedBox(
-                  height: 80,
-                  child: StreamBuilder(
-                      stream: FirestoreService().fetchAccountsStream(),
-                      builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
-                        List<Account>? accounts = snapshot.data;
+              child: SizedBox(
+                height: 80,
+                child: StreamBuilder(
+                    stream: FirestoreService().fetchAccountsStream(),
+                    builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                      List<Account>? accounts = snapshot.data;
 
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong, please connect to the internet');
-                        }
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Text("Loading");
-                        }
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong, please connect to the internet');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("Loading");
+                      }
 
-                        debugPrint('length: ${accounts!.length.toString()}');
-                        accounts.forEach((element) {
-                          debugPrint('hello');
-                          debugPrint(element.toString());
-                        });
+                      debugPrint('length: ${accounts!.length.toString()}');
+                      accounts.forEach((element) {
+                        debugPrint('hello');
+                        debugPrint(element.toString());
+                      });
 
-                        return ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: accounts.length,
-                          itemBuilder: (context, index) {
-                            return AccountCard(
-                              account: accounts[index],
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-                        );
-                      }),
-                );
-              }),
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: accounts.length,
+                        itemBuilder: (context, index) {
+                          return AccountCard(
+                            account: accounts[index],
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                      );
+                    }),
+              ),
             ),
             const SizedBox(height: 16),
             Container(

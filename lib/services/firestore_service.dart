@@ -28,6 +28,14 @@ class FirestoreService {
     return list;
   }
 
+  Future<void> insertRecord(dynamic record) async {
+    if (record.runtimeType == TransactionRecord) {
+      await db.collection('records').add(record.toJson());
+    } else if (record.runtimeType == TransferRecord) {
+      await db.collection('records').add(record.toJson());
+    }
+  }
+
   Stream<List<Account>> fetchAccountsStream() {
     Stream<List<Account>> list = db.collection('accounts').snapshots().map((snapshot) => snapshot.docs.map((doc) {
           return Account.fromFirestore(doc);
@@ -53,9 +61,13 @@ class FirestoreService {
       return db.collection('accounts').doc(snapshot.docs.first.id).update({'isCurrentAccount': false});
     });
 
+    // When Firestore updates too fast:
     Timer(const Duration(milliseconds: 250), () {
       db.collection('accounts').doc(account.id).update({'isCurrentAccount': true});
     });
-    // db.collection('accounts').doc(account.id).update({'isCurrentAccount': true});
+  }
+
+  Future<void> modifyAccountValue(String accountId, double value) async {
+    db.collection('accounts').doc(accountId).update({'value': value});
   }
 }

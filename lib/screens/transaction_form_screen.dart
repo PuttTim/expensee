@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expensee/models/category.dart';
 import 'package:expensee/models/transaction_type_enum.dart';
 import 'package:expensee/providers/accounts_provider.dart';
+import 'package:expensee/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/app_colours.dart';
 import '../models/transaction_record.dart';
 import '../providers/records_provider.dart';
@@ -79,6 +82,7 @@ class TransactionFormScreen extends StatelessWidget {
               'amount': _formKey.currentState!.value['isPositive']
                   ? _formKey.currentState!.value['amount']
                   : (-_formKey.currentState!.value['amount']),
+              'recordType': 'transaction',
             };
 
             /// If the user is editing, then the record is updated,
@@ -116,14 +120,10 @@ class TransactionFormScreen extends StatelessWidget {
                 ),
               );
             } else {
-              Provider.of<RecordsProvider>(context, listen: false).insertRecord(
-                TransactionRecord.fromJson(data),
-              );
-              Provider.of<AccountsProvider>(context, listen: false).modifyAccountValue(
-                isPositive: data['isPositive'],
-                amount: data['amount'].abs(),
-                id: data['accountId'],
-              );
+              FirestoreService().insertRecord(TransactionRecord.fromJson(data));
+
+              FirestoreService().modifyAccountValue(data['accountId'], data['amount']);
+
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -246,25 +246,38 @@ class TransactionFormScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    FormBuilderDropdown(
-                      name: 'accountId',
-                      initialValue: Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
-                      onChanged: (value) {
-                        /// Sets the currency displayed to the current account's primary currency.
-                        _formKey.currentState!.fields['currency']?.didChange(
-                            Provider.of<AccountsProvider>(context, listen: false)
-                                .fetchAccount(value.toString())
-                                .primaryCurrency);
-                      },
-                      style: const TextStyle(color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
-                      items: Provider.of<AccountsProvider>(context, listen: false)
-                          .accounts
-                          .map((account) => DropdownMenuItem(
-                                value: account.id,
-                                child: Text(account.name),
-                              ))
-                          .toList(),
-                    ),
+                    StreamBuilder(
+                        stream: FirestoreService().fetchAccountsStream(),
+                        builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                          List<Account>? accounts = snapshot.data;
+
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong, please connect to the internet');
+                          }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Text("Loading");
+                          }
+
+                          return FormBuilderDropdown(
+                            name: 'accountId',
+                            initialValue: isEditing
+                                ? record?.accountId
+                                : accounts!.where((account) => account.isCurrentAccount).first.id,
+                            onChanged: (value) {
+                              /// Sets the currency displayed to the current account's primary currency.
+                              _formKey.currentState!.fields['currency']
+                                  ?.didChange(accounts!.where((account) => account.id == value).first.primaryCurrency);
+                            },
+                            style: const TextStyle(
+                                color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
+                            items: accounts!
+                                .map((account) => DropdownMenuItem(
+                                      value: account.id,
+                                      child: Text(account.name),
+                                    ))
+                                .toList(),
+                          );
+                        }),
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -396,7 +409,7 @@ class TransactionFormScreen extends StatelessWidget {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      valueTransformer: (date) => date?.toIso8601String(),
+                      valueTransformer: (date) => Timestamp.fromDate(date!),
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.calendar_month,
