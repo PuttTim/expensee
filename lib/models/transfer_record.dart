@@ -17,6 +17,7 @@ class TransferRecord {
   DateTime time;
   double conversionRate;
   String recordType;
+  String? docId;
   String? note;
 
   static DateTime dateTimeFromTimestamp(Timestamp timestamp) {
@@ -38,6 +39,7 @@ class TransferRecord {
     required this.time,
     required this.conversionRate,
     required this.recordType,
+    this.docId,
     this.note,
   });
 

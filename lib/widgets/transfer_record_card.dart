@@ -25,7 +25,7 @@ class TransferRecordCard extends StatelessWidget {
           ),
         ),
         child: Material(
-          elevation: 8,
+          elevation: 4,
           borderRadius: BorderRadius.circular(8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

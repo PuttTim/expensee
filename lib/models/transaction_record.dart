@@ -17,6 +17,7 @@ class TransactionRecord {
   @JsonKey(fromJson: timestampToDateTime, toJson: dateTimeToTimestamp)
   DateTime time;
   String recordType;
+  String? docId;
   String? note;
 
   static DateTime timestampToDateTime(Timestamp timestamp) {
@@ -37,6 +38,7 @@ class TransactionRecord {
     required this.category,
     required this.time,
     required this.recordType,
+    this.docId,
     this.note,
   });
 

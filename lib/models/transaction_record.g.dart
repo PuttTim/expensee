@@ -17,6 +17,7 @@ TransactionRecord _$TransactionRecordFromJson(Map<String, dynamic> json) =>
       category: $enumDecode(_$CategoryEnumMap, json['category']),
       time: TransactionRecord.timestampToDateTime(json['time'] as Timestamp),
       recordType: json['recordType'] as String,
+      docId: json['docId'] as String?,
       note: json['note'] as String?,
     );
 
@@ -31,6 +32,7 @@ Map<String, dynamic> _$TransactionRecordToJson(TransactionRecord instance) =>
       'category': _$CategoryEnumMap[instance.category],
       'time': TransactionRecord.dateTimeToTimestamp(instance.time),
       'recordType': instance.recordType,
+      'docId': instance.docId,
       'note': instance.note,
     };
 

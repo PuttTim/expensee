@@ -18,6 +18,7 @@ TransferRecord _$TransferRecordFromJson(Map<String, dynamic> json) =>
       time: TransferRecord.dateTimeFromTimestamp(json['time'] as Timestamp),
       conversionRate: (json['conversionRate'] as num).toDouble(),
       recordType: json['recordType'] as String,
+      docId: json['docId'] as String?,
       note: json['note'] as String?,
     );
 
@@ -33,6 +34,7 @@ Map<String, dynamic> _$TransferRecordToJson(TransferRecord instance) =>
       'time': TransferRecord.dateTimeToTimestamp(instance.time),
       'conversionRate': instance.conversionRate,
       'recordType': instance.recordType,
+      'docId': instance.docId,
       'note': instance.note,
     };
 
