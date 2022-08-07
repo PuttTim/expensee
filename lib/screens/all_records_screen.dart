@@ -4,6 +4,7 @@ import 'package:expensee/widgets/transaction_record_card.dart';
 import 'package:expensee/widgets/transfer_record_card.dart';
 import 'package:flutter/material.dart';
 
+import '../models/app_colours.dart';
 import '../models/transfer_record.dart';
 
 class AllRecordsScreen extends StatelessWidget {
@@ -18,6 +19,16 @@ class AllRecordsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 8),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 16),
+              child: const Text(
+                'All your records',
+                style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 8),
             StreamBuilder(
               stream: FirestoreService().fetchRecordsStream(),
               builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -41,6 +52,7 @@ class AllRecordsScreen extends StatelessWidget {
                 // });
 
                 return ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 16),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: records!.length,

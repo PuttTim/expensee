@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:expensee/models/account.dart';
-import 'package:expensee/providers/records_provider.dart';
 import 'package:expensee/screens/new_record_screen.dart';
 import 'package:expensee/services/auth_service.dart';
 import 'package:expensee/services/firestore_service.dart';
@@ -125,24 +124,40 @@ class HomeScreen extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 16),
               child: const Text(
-                'Records',
+                'Recent Records',
                 style: TextStyle(color: AppColours.forestryGreen, fontSize: 32, fontWeight: FontWeight.bold),
               ),
             ),
-            Consumer<RecordsProvider>(
-              builder: (context, recordsProvider, child) {
-                List<dynamic> records = recordsProvider.records;
+            StreamBuilder(
+              stream: FirestoreService().fetchRecordsStream(),
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                List<dynamic>? records = snapshot.data;
 
-                /// Sorts the transactions by DateTime, newest record first.
-                records.sort((a, b) {
-                  return b.time.compareTo(a.time);
-                });
+                if (snapshot.hasError) {
+                  debugPrint('Error: ${snapshot.error}');
+                  return const Text('Something went wrong, please connect to the internet');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("Loading");
+                }
+
+                // debugPrint('length: ${records!.length.toString()}');
+                //
+                // debugPrint('records: $records');
+                // records.forEach((element) {
+                //   debugPrint('hello');
+                //   debugPrint(element.toString());
+                // });
+
                 return ListView.separated(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
                     /// and then returns the appropriate widget for that record type.
-                    if (records[index].runtimeType == TransactionRecord) {
+                    if (records![index].runtimeType == TransactionRecord) {
                       return TransactionRecordCard(
                         record: records[index],
                         index: index,
@@ -156,7 +171,6 @@ class HomeScreen extends StatelessWidget {
                       return Container();
                     }
                   },
-                  itemCount: recordsProvider.records.length,
                   separatorBuilder: (context, index) => const Padding(
                     padding: EdgeInsets.symmetric(vertical: 2),
                   ),
