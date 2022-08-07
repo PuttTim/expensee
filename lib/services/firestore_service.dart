@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expensee/models/account.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_authrtino.dart';
 
 import '../models/transaction_record.dart';
 import '../models/transfer_record.dart';
@@ -14,9 +13,9 @@ class FirestoreService {
   Stream<List<dynamic>> fetchRecordsStream() {
     dynamic list = db.collection('records').snapshots().map((snapshot) => snapshot.docs.map((doc) {
           {
-            doc.data().forEach((key, value) {
-              debugPrint('key: $key, value: $value');
-            });
+            // doc.data().forEach((key, value) {
+            //   debugPrint('key: $key, value: $value');
+            // });
             if (doc.data()['recordType'] == 'transaction') {
               return TransactionRecord.fromFirestore(doc);
             } else if (doc.data()['recordType'] == 'transfer') {
@@ -39,11 +38,7 @@ class FirestoreService {
   Future<void> updateRecord(dynamic record) async {
     // debugPrint(record.docId);
     if (record.runtimeType == TransactionRecord) {
-      await db
-          .collection('records')
-          .doc(record.docId)
-          .update(record.toJson())
-          .onError((error, stackTrace) => debugPrint('error: $error, stackTrace: $stackTrace'));
+      await db.collection('records').doc(record.docId).update(record.toJson());
     } else if (record.runtimeType == TransferRecord) {
       await db.collection('records').doc(record.docId).update(record.toJson());
     }
@@ -89,6 +84,10 @@ class FirestoreService {
   }
 
   Future<void> modifyAccountValue(String accountId, double value) async {
-    db.collection('accounts').doc(accountId).update({'value': value});
+    db.collection('accounts').doc(accountId).update({'value': FieldValue.increment(value)});
+  }
+
+  Future<void> modifyAccountValueByRecordDelete(String accountId, double value) async {
+    db.collection('accounts').doc(accountId).update({'value': FieldValue.increment(-value)});
   }
 }

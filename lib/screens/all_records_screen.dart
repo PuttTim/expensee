@@ -41,10 +41,12 @@ class AllRecordsScreen extends StatelessWidget {
 
                 return ListView.separated(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: records!.length,
                   itemBuilder: (context, index) {
                     /// If/else statement to check whether or not the record type is a TransactionRecord or a TransferRecord.
                     /// and then returns the appropriate widget for that record type.
-                    if (records![index].runtimeType == TransactionRecord) {
+                    if (records[index].runtimeType == TransactionRecord) {
                       return TransactionRecordCard(
                         record: records[index],
                         index: index,
@@ -58,7 +60,6 @@ class AllRecordsScreen extends StatelessWidget {
                       return Container();
                     }
                   },
-                  itemCount: records!.length,
                   separatorBuilder: (context, index) => const Padding(
                     padding: EdgeInsets.symmetric(vertical: 2),
                   ),

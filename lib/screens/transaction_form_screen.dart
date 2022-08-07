@@ -51,6 +51,7 @@ class TransactionFormScreen extends StatelessWidget {
                           child: const Text('DELETE'),
                           onPressed: () {
                             FirestoreService().deleteRecord(record);
+                            FirestoreService().modifyAccountValueByRecordDelete(record!.accountId, record!.amount);
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -103,6 +104,7 @@ class TransactionFormScreen extends StatelessWidget {
                       child: const Text('SAVE'),
                       onPressed: () {
                         FirestoreService().updateRecord(TransactionRecord.fromJson({...data, 'docId': record!.docId}));
+                        FirestoreService().modifyAccountValue(data['accountId'], data['amount']);
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expensee/models/app_colours.dart';
 import 'package:expensee/providers/records_provider.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
+import '../models/account.dart';
 import '../models/transfer_record.dart';
 import '../models/transfer_type_enum.dart';
 import '../providers/accounts_provider.dart';
+import '../services/firestore_service.dart';
 import 'main_screen.dart';
 
 class TransferFormScreen extends StatelessWidget {
@@ -172,58 +175,76 @@ class TransferFormScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(children: [
                       Expanded(
-                        child: FormBuilderDropdown(
-                          name: 'fromAccountId',
-                          initialValue: isEditing
-                              ? record?.fromAccountId
-                              : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
-                          onChanged: (value) {
-                            /// Sets the currency displayed to the current account's primary currency.
-                            _formKey.currentState!.fields['fromCurrency']?.didChange(
-                                Provider.of<AccountsProvider>(context, listen: false)
-                                    .fetchAccount(value.toString())
-                                    .primaryCurrency);
-                          },
-                          style:
-                              const TextStyle(color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
-                          items: Provider.of<AccountsProvider>(context, listen: false)
-                              .accounts
-                              .map((account) => DropdownMenuItem(
-                                    value: account.id,
-                                    child: Text(account.name),
-                                  ))
-                              .toList(),
-                        ),
+                        child: StreamBuilder(
+                            stream: FirestoreService().fetchAccountsStream(),
+                            builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                              List<Account>? accounts = snapshot.data;
+
+                              if (snapshot.hasError) {
+                                return const Text('Something went wrong, please connect to the internet');
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Text("Loading");
+                              }
+
+                              return FormBuilderDropdown(
+                                name: 'fromAccountId',
+                                initialValue: isEditing
+                                    ? record?.fromAccountId
+                                    : accounts!.where((account) => account.isCurrentAccount).first.id,
+                                onChanged: (value) {
+                                  /// Sets the currency displayed to the current account's primary currency.
+                                  _formKey.currentState!.fields['currency']?.didChange(
+                                      accounts!.where((account) => account.id == value).first.primaryCurrency);
+                                },
+                                style: const TextStyle(
+                                    color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
+                                items: accounts!
+                                    .map((account) => DropdownMenuItem(
+                                          value: account.id,
+                                          child: Text(account.name),
+                                        ))
+                                    .toList(),
+                              );
+                            }),
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Icon(Icons.east, color: AppColours.moodyPurple),
                       ),
                       Expanded(
-                        child: FormBuilderDropdown(
-                          name: 'toAccountId',
-                          initialValue: isEditing
-                              ? record?.toAccountId
-                              : Provider.of<AccountsProvider>(context, listen: true).currentAccount.id,
-                          onChanged: (value) {
-                            /// Sets the currency displayed to the current account's primary currency.
-                            _formKey.currentState!.fields['toCurrency']?.didChange(
-                                Provider.of<AccountsProvider>(context, listen: false)
-                                    .fetchAccount(value.toString())
-                                    .primaryCurrency);
-                          },
-                          style:
-                              const TextStyle(color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
-                          items: Provider.of<AccountsProvider>(context, listen: false)
-                              .accounts
-                              .map(
-                                (account) => DropdownMenuItem(
-                                  value: account.id,
-                                  child: Text(account.name),
-                                ),
-                              )
-                              .toList(),
-                        ),
+                        child: StreamBuilder(
+                            stream: FirestoreService().fetchAccountsStream(),
+                            builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                              List<Account>? accounts = snapshot.data;
+
+                              if (snapshot.hasError) {
+                                return const Text('Something went wrong, please connect to the internet');
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Text("Loading");
+                              }
+
+                              return FormBuilderDropdown(
+                                name: 'toAccountId',
+                                initialValue: isEditing
+                                    ? record?.toAccountId
+                                    : accounts!.where((account) => account.isCurrentAccount).first.id,
+                                onChanged: (value) {
+                                  /// Sets the currency displayed to the current account's primary currency.
+                                  _formKey.currentState!.fields['currency']?.didChange(
+                                      accounts!.where((account) => account.id == value).first.primaryCurrency);
+                                },
+                                style: const TextStyle(
+                                    color: AppColours.moodyPurple, fontSize: 16, fontWeight: FontWeight.w500),
+                                items: accounts!
+                                    .map((account) => DropdownMenuItem(
+                                          value: account.id,
+                                          child: Text(account.name),
+                                        ))
+                                    .toList(),
+                              );
+                            }),
                       ),
                     ]),
                     const SizedBox(height: 16),
@@ -387,7 +408,7 @@ class TransferFormScreen extends StatelessWidget {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      valueTransformer: (date) => date?.toIso8601String(),
+                      valueTransformer: (date) => Timestamp.fromDate(date!),
                       decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.calendar_month,
