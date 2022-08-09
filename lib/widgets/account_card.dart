@@ -41,14 +41,17 @@ class AccountCard extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(
-                  '${account.primaryCurrency} ${account.value}',
-                  style: TextStyle(
-                      color: isCurrentAccount ? AppColours.wittyWhite : AppColours.forestryGreen,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    '${account.primaryCurrency} ${account.value}',
+                    style: TextStyle(
+                        color: isCurrentAccount ? AppColours.wittyWhite : AppColours.forestryGreen,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ],

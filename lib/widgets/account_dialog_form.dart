@@ -32,9 +32,7 @@ class AccountDialogForm extends StatelessWidget {
               /// Duplicates the form's data into a map and adds in the key 'id',
               /// which is the next index inside the accounts list inside AccountsProvider
               /// TODO: Update to Firestore's id system
-              Map<String, dynamic> data = {
-                ..._formKey.currentState!.value,
-              };
+              Map<String, dynamic> data = {..._formKey.currentState!.value, 'isCurrentAccount': true};
 
               FirestoreService().addAccount(Account.fromJson(data));
               Navigator.pop(context);
