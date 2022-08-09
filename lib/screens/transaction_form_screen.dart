@@ -209,22 +209,34 @@ class TransactionFormScreen extends StatelessWidget {
                       flex: 6,
                       child: Container(
                         padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: FormBuilderDropdown(
-                          /// Disabled as advanced currency conversions requires Firebase Firestore to function as intended.
-                          enabled: false,
-                          name: 'currency',
-                          initialValue: isEditing
-                              ? record?.currency
-                              : Provider.of<AccountsProvider>(context, listen: true).currentAccount.primaryCurrency,
-                          style:
-                              const TextStyle(color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
-                          items: ['EUR', 'SGD', 'THB', 'USD']
-                              .map((currency) => DropdownMenuItem(
-                                    value: currency,
-                                    child: Text('${countryToEmoji(currency)} $currency'),
-                                  ))
-                              .toList(),
-                        ),
+                        child: StreamBuilder(
+                            stream: FirestoreService().fetchAccountsStream(),
+                            builder: (BuildContext context, AsyncSnapshot<List<Account>> snapshot) {
+                              List<Account>? accounts = snapshot.data;
+
+                              if (snapshot.hasError) {
+                                return const Text('Something went wrong, please connect to the internet');
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Text("Loading");
+                              }
+
+                              return FormBuilderDropdown(
+                                name: 'currency',
+                                enabled: false,
+                                initialValue: isEditing
+                                    ? record?.currency
+                                    : accounts?.where((account) => account.isCurrentAccount).first.primaryCurrency,
+                                style: const TextStyle(
+                                    color: AppColours.moodyPurple, fontSize: 24, fontWeight: FontWeight.w500),
+                                items: ['EUR', 'SGD', 'THB', 'USD']
+                                    .map((currency) => DropdownMenuItem(
+                                          value: currency,
+                                          child: Text('${countryToEmoji(currency)} $currency'),
+                                        ))
+                                    .toList(),
+                              );
+                            }),
                       ),
                     )
                   ],
